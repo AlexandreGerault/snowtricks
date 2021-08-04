@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+left to right direction
+
+:Visitor:
+:Member:
+
+Member -|> Visitor
+
+package Security {
+    usecase "Login" as Login
+    usecase "Create a member account" as Register
+    usecase "Logout" as Logout
+}
+
+package Community {
+    usecase "Add a figure to the figure's directory" as FigureCreate
+    usecase "Edit a figure's from the directory" as FigureEdit
+    usecase "Remove a figure's from the directory" as FigureDelete
+    usecase "Post a message in the discussion space of a figure" as FigureMessageCreate
+}
+
+package Public {
+    usecase "List snowboard figures" as FiguresIndex
+    usecase "See figure's details" as FiguresShow
+    usecase "See figure's discussion messages" as FiguresReadMessages
+}
+
+Visitor --> FiguresIndex
+Visitor --> FiguresShow
+Visitor --> FiguresReadMessages
+Visitor --> Login
+Visitor --> Register
+
+Member --> Logout
+Member --> FigureCreate
+Member --> FigureEdit
+Member --> FigureDelete
+Member --> FigureMessageCreate
+@enduml
