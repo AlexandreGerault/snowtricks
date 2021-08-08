@@ -21,11 +21,15 @@
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
         </testsuite>
+        <testsuite name="Domain Test Suite">
+            <directory>domain/tests</directory>
+        </testsuite>
     </testsuites>
 
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
+            <directory suffix=".php">domain/src</directory>
         </include>
     </coverage>
 
