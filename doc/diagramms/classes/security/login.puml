@@ -1,0 +1,78 @@
+@startuml
+
+package Domain {
+    class LoginRequest {
+        -email: string
+        -password: string
+    }
+
+    interface LoginPresenterInterface {
+        +presents(response: LoginResponse)
+    }
+
+    class Login {
+        +executes(request: LoginRequest, presenter: LoginPresenterInterface)
+    }
+
+    interface MembersGateway {
+        +getMemberByEmail(email: string): Member
+    }
+
+    class Member {
+        -email: string
+        -password: string
+        -username: string
+    }
+
+    class LoginResponse {
+        -errors: array
+    }
+
+    Login .down.> LoginRequest
+
+    Member <.. MembersGateway
+    LoginResponse *- Member
+
+    interface LoginInterface {
+        +check(member: Member, plainPassword: string)
+    }
+
+    LoginInterface .up.> Member
+
+    LoginInterface .right. MembersGateway
+
+    LoginResponse <. LoginPresenterInterface
+}
+
+package UserInterface {
+    class LoginController {
+        +login(AuthenticationUtils $authenticationUtils): Response
+        +logout()
+    }
+}
+
+package Infrastructure {
+    class LoginFormAuthenticator implements LoginPresenterInterface{}
+
+    LoginViewModel *-- Member
+
+    class LoginViewModel {
+        + errors: string[]
+    }
+
+    class MembersRepository implements MembersGateway{}
+
+    class DoctrineUser {
+        - username: string
+        - email: string
+        - password: string
+
+        +getUsername()
+        +getEmail()
+        +getPassword()
+    }
+    DoctrineUser <.down. MembersRepository
+
+}
+
+@enduml
