@@ -1,0 +1,11 @@
+security_controllers:
+    resource: ../../src/UserInterface/Security/Controller/
+    type: annotation
+
+tricks_controllers:
+    resource: ../../src/UserInterface/Tricks/Controller/
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation

@@ -1,0 +1,31 @@
+@startuml
+
+actor Visitor
+
+Visitor -> UserInterface: Ask login page
+activate UserInterface
+UserInterface -> Visitor: Render login form page
+deactivate UserInterface
+
+Visitor -> UserInterface: Submit form
+activate UserInterface
+UserInterface -> UserInterface: Validate form inputs
+UserInterface -> Domain: Execute use case
+activate Domain
+alt Credentials do not match any record
+    Domain -> Infrastructure: Compare credentials with database
+    activate Infrastructure
+    Infrastructure -> Domain: Throw a NoUserWithCredentialsException
+    deactivate Infrastructure
+    UserInterface -> Domain: Catch exception
+    UserInterface -> Visitor: Render login form page with errors
+else Credentials match a user
+    Domain -> Infrastructure: Compare credentials with database
+    activate Infrastructure
+    Infrastructure -> Domain: Return the user matching credentials
+    deactivate Infrastructure
+    Domain -> Infrastructure: Log in the user
+    UserInterface -> Domain: Presents the response
+    UserInterface -> Visitor: Redirect to homepage
+end
+@enduml
