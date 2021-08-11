@@ -14,6 +14,7 @@ use Domain\Security\UseCases\Login\LoginResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -37,6 +38,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
+        private FlashBagInterface $flash,
         private Login $login
     ) {
     }
@@ -71,9 +73,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        if ($request->hasSession()) {
-            $request->getSession()->set('login_errors', $this->errors + [$exception]);
-        }
+        $this->flash->add('login_errors', $this->errors + [$exception]);
 
         $url = $this->getLoginUrl($request);
 
@@ -87,6 +87,14 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public function presents(LoginResponse $response): void
     {
-        $this->errors = $response->getErrors();
+        $errors = $response->getErrors();
+
+        if (in_array('UserNotFound', $errors)) {
+            $this->errors[] = "Aucun utilisateur trouvé.";
+        }
+
+        if (in_array('WrongCredentials', $errors)) {
+            $this->errors[] = "Les informations de connexions ne correspondent pas.";
+        }
     }
 }
