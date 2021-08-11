@@ -33,7 +33,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public const LOGIN_ROUTE = 'app_login';
 
-    private LoginResponse $response;
+    private array $errors;
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
@@ -72,8 +72,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         if ($request->hasSession()) {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
-            $request->getSession()->set('login_errors', $this->response->getErrors());
+            $request->getSession()->set('login_errors', $this->errors + [$exception]);
         }
 
         $url = $this->getLoginUrl($request);
@@ -88,6 +87,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public function presents(LoginResponse $response): void
     {
-        $this->response = $response;
+        $this->errors = $response->getErrors();
     }
 }
