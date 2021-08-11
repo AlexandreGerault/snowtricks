@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security\Guard;
 
 use App\Infrastructure\Security\Contracts\Repository\MembersRepositoryInterface;
+use App\UserInterface\Security\ViewModels\LoginViewModel;
 use Domain\Security\Entity\Member;
 use Domain\Security\Providers\AuthProviderInterface;
 use Domain\Security\UseCases\Login\Login;
@@ -34,13 +35,14 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public const LOGIN_ROUTE = 'app_login';
 
-    private array $errors;
+    private LoginViewModel $viewModel;
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
         private FlashBagInterface $flash,
         private Login $login
     ) {
+        $this->viewModel = new LoginViewModel();
     }
 
     public function authenticate(Request $request): PassportInterface
@@ -73,7 +75,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
-        $this->flash->add('login_errors', $this->errors + [$exception]);
+        if ($request->hasSession()) {
+            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $this->viewModel->errors + [$exception]);
+        }
 
         $url = $this->getLoginUrl($request);
 
@@ -90,11 +94,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
         $errors = $response->getErrors();
 
         if (in_array('UserNotFound', $errors)) {
-            $this->errors[] = "Aucun utilisateur trouvé.";
+            $this->viewModel->errors[] = "Aucun utilisateur trouvé.";
         }
 
         if (in_array('WrongCredentials', $errors)) {
-            $this->errors[] = "Les informations de connexions ne correspondent pas.";
+            $this->viewModel->errors[] = "Les informations de connexions ne correspondent pas.";
         }
     }
 }

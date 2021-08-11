@@ -21,7 +21,7 @@
                 <form class="space-y-6" method="POST">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
 
-                    {% for error in app.flashes('login_errors') %}
+                    {% for error in errors %}
                         <p class="text-red-700">{{ error|join(' ') }}</p>
                     {% endfor %}
 
