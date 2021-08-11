@@ -28,7 +28,7 @@ class Login
         }
 
 
-        if ( ! $this->auth->check($email, $password, $member)) {
+        if ( ! $this->auth->check($member, $password)) {
             $response = new LoginResponse();
             $response->addError('WrongCredentials');
             $presenter->presents($response);
