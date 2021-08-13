@@ -16,4 +16,10 @@ interface MembersGateway
      * @return Member
      */
     public function getMemberByEmail(string $email): Member;
+
+    public function checkEmailIsFree(string $email): bool;
+
+    public function checkUsernameIsFree(string $username): bool;
+
+    public function register(Member $member): void;
 }
