@@ -18,7 +18,6 @@ class Register
         $username = $request->username;
         $email = $request->email;
         $password = $request->password;
-        $passwordRepeat = $request->passwordRepeat;
 
         if (! $this->gateway->checkEmailIsFree($email)) {
             $presenter->handleEmailAlreadyInUse();
@@ -27,11 +26,6 @@ class Register
 
         if (! $this->gateway->checkUsernameIsFree($username)) {
             $presenter->handleUsernameAlreadyInUse();
-            return;
-        }
-
-        if ($password !== $passwordRepeat) {
-            $presenter->handlePasswordsMismatch();
             return;
         }
 

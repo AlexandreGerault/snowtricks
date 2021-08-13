@@ -38,7 +38,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
 
     public function test_it_can_register_a_member()
     {
-        $request = new RegisterRequest("Username", "email@email", "password", "password");
+        $request = new RegisterRequest("Username", "email@email", "password");
 
         $register = new Register($this->repository);
         $register->execute($request, $this);
@@ -51,7 +51,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
 
     public function test_it_cannot_register_a_user_with_an_email_that_is_already_registered()
     {
-        $request = new RegisterRequest("Username", "user@email", "password", "password");
+        $request = new RegisterRequest("Username", "user@email", "password");
 
         $register = new Register($this->repository);
         $register->execute($request, $this);
@@ -62,7 +62,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
 
     public function test_it_cannot_register_a_user_with_a_username_that_is_already_registered()
     {
-        $request = new RegisterRequest("username", "email@email", "password", "password");
+        $request = new RegisterRequest("username", "email@email", "password");
 
         $register = new Register($this->repository);
         $register->execute($request, $this);
