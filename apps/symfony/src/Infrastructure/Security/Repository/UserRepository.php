@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Domain\Security\Entity\Member;
 use Domain\Security\Exceptions\UserNotFoundException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, MembersRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private UserPasswordHasherInterface $hasher)
     {
         parent::__construct($registry, User::class);
     }
@@ -54,10 +55,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $user = $this->getUserByEmail($email);
 
-        if (! $user) {
+        if ( ! $user) {
             throw new UserNotFoundException();
         }
 
         return new Member($user->getEmail(), $user->getUsername(), $user->getPassword());
+    }
+
+    public function checkEmailIsFree(string $email): bool
+    {
+        return (bool) $this->createQueryBuilder('m')
+                           ->where('m.email = :email')
+                           ->setParameter('email', $email)
+                           ->getFirstResult();
+    }
+
+    public function checkUsernameIsFree(string $username): bool
+    {
+        return (bool) $this->createQueryBuilder('m')
+                           ->where('m.username = :username')
+                           ->setParameter('username', $username)
+                           ->getFirstResult();
+    }
+
+    public function register(Member $member): void
+    {
+        $user = new User();
+        $user->setEmail($member->email());
+        $user->setUsername($member->username());
+        $user->setPassword($this->hasher->hashPassword($member->password()));
+
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 }
