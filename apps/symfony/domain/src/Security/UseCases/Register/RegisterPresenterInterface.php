@@ -11,6 +11,4 @@ interface RegisterPresenterInterface
     public function handleEmailAlreadyInUse(): void;
 
     public function handleUsernameAlreadyInUse(): void;
-
-    public function handlePasswordsMismatch(): void;
 }
