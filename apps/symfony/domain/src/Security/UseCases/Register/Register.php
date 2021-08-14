@@ -31,5 +31,7 @@ class Register
 
         $member = new Member($email, $username, $password);
         $this->gateway->register($member);
+
+        $presenter->presents(new RegisterResponse($member));
     }
 }
