@@ -1,12 +1,26 @@
 {% use 'tailwind_2_layout.html.twig' %}
 
 {% block form_row %}
-    {% set row_class = row_class|default('mt-2 px-3') %}
-    {{ parent() }}
+    {% set row_attr = row_attr|merge({ class: row_attr.class|default(row_class|default('mb-2 px-3')) }) %}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </div>
 {% endblock form_row %}
 
+{% block form_errors %}
+    {% set error_item_class = error_item_class|default('mt-1 text-sm text-red-600') %}
+    {{ parent() }}
+{% endblock form_errors %}
+
 {% block widget_attributes %}
-    {% set widget_class = row_class|default('mt-1 mb-4 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm') %}
+    {% set widget_class = row_class|default('mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm') %}
     {{ parent() }}
 {% endblock widget_attributes %}
 
