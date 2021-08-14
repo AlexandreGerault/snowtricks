@@ -1,0 +1,25 @@
+{% use 'tailwind_2_layout.html.twig' %}
+
+{% block form_row %}
+    {% set row_class = row_class|default('mt-2 px-3') %}
+    {{ parent() }}
+{% endblock form_row %}
+
+{% block widget_attributes %}
+    {% set widget_class = row_class|default('mt-1 mb-4 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm') %}
+    {{ parent() }}
+{% endblock widget_attributes %}
+
+{% block form_label %}
+    {% set label_class = label_class|default('text-gray-600') %}
+    {{ parent() }}
+{% endblock form_label %}
+
+{% block submit_widget %}
+    {% set attr = attr|merge({ class: attr.class|default("w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") }) %}
+    {% set row_class = row_class|default('mt-2 px-3') %}
+
+    {{ parent() }}
+{% endblock submit_widget %}
+
+
