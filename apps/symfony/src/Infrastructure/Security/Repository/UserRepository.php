@@ -64,18 +64,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function checkEmailIsFree(string $email): bool
     {
-        return (bool) $this->createQueryBuilder('m')
-                           ->where('m.email = :email')
-                           ->setParameter('email', $email)
-                           ->getFirstResult();
+        $user = $this->findBy(['email' => $email]);
+
+        return ! $user;
     }
 
     public function checkUsernameIsFree(string $username): bool
     {
-        return (bool) $this->createQueryBuilder('m')
-                           ->where('m.username = :username')
-                           ->setParameter('username', $username)
-                           ->getFirstResult();
+        $user = $this->findBy(['username' => $username]);
+
+        return ! $user;
     }
 
     public function register(Member $member): void
@@ -83,7 +81,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user = new User();
         $user->setEmail($member->email());
         $user->setUsername($member->username());
-        $user->setPassword($this->hasher->hashPassword($member->password()));
+        $user->setPassword($this->hasher->hashPassword($user, $member->password()));
 
         $this->_em->persist($user);
         $this->_em->flush();
