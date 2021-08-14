@@ -7,9 +7,9 @@ namespace Domain\Security\UseCases\Register;
 class RegisterRequest
 {
     public function __construct(
-        public string $username = "",
-        public string $email = "",
-        public string $password = "",
+        public ?string $username = null,
+        public ?string $email = null,
+        public ?string $password = null,
     ) {
     }
 }
