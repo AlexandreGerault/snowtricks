@@ -6,10 +6,11 @@ namespace Domain\Security\UseCases\Register;
 
 use Domain\Security\Entity\Member;
 use Domain\Security\Gateway\MembersGateway;
+use Domain\Security\Providers\NotificationProviderInterface;
 
 class Register
 {
-    public function __construct(private MembersGateway $gateway)
+    public function __construct(private MembersGateway $gateway, private NotificationProviderInterface $notifier)
     {
     }
 
@@ -31,6 +32,7 @@ class Register
 
         $member = new Member($email, $username, $password);
         $this->gateway->register($member);
+        $this->notifier->sendRegistrationNotification($member);
 
         $presenter->presents(new RegisterResponse($member));
     }
