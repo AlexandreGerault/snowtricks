@@ -7,6 +7,9 @@ namespace App\Infrastructure\Security\Repository;
 use App\Infrastructure\Security\Contracts\Repository\MembersRepositoryInterface;
 use App\Infrastructure\Security\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Domain\Security\Entity\Member;
 use Domain\Security\Exceptions\UserNotFoundException;
@@ -30,6 +33,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     * @throws ORMException
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
@@ -42,6 +46,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * @throws NonUniqueResultException
+     */
     public function getUserByEmail(string $email): ?User
     {
         return $this->createQueryBuilder("m")
@@ -51,6 +58,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                     ->getOneOrNullResult();
     }
 
+    /**
+     * @throws NonUniqueResultException
+     * @throws UserNotFoundException
+     */
     public function getMemberByEmail(string $email): Member
     {
         $user = $this->getUserByEmail($email);
@@ -76,6 +87,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return ! $user;
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
     public function register(Member $member): void
     {
         $user = new User();
