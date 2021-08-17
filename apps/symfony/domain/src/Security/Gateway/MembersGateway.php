@@ -22,4 +22,6 @@ interface MembersGateway
     public function checkUsernameIsFree(string $username): bool;
 
     public function register(Member $member): void;
+
+    public function updateMember(Member $member): void;
 }

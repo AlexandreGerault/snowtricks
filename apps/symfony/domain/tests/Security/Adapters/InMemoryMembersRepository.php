@@ -41,4 +41,9 @@ class InMemoryMembersRepository implements MembersGateway
     {
         $this->members[$member->email()] = $member;
     }
+
+    public function updateMember(Member $member): void
+    {
+        $this->members[$member->email()] = $member;
+    }
 }

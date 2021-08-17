@@ -9,12 +9,14 @@ class Member
     protected string $email;
     protected string $username;
     protected string $password;
+    protected bool $active;
 
-    public function __construct(string $email, string $username, string $password)
+    public function __construct(string $email, string $username, string $password, bool $active = false)
     {
-        $this->email    = $email;
+        $this->email = $email;
         $this->username = $username;
         $this->password = $password;
+        $this->active = $active;
     }
 
     public function email(): string
@@ -30,5 +32,15 @@ class Member
     public function password(): string
     {
         return $this->password;
+    }
+
+    public function activate(): void
+    {
+        $this->active = true;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 }
