@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $tokens;
 
     #[ORM\Column(type: "boolean")]
-    private bool $active;
+    private bool $active = false;
 
     public function getId(): ?int
     {
@@ -121,5 +121,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function activate(): self
+    {
+        $this->active = true;
+
+        return $this;
+    }
+
+    public function getTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
+    public function setActive(bool $isActive)
+    {
+        $this->active = $isActive;
     }
 }

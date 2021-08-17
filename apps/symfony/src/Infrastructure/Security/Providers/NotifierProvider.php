@@ -13,6 +13,7 @@ use Domain\Security\Providers\NotificationProviderInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class NotifierProvider implements NotificationProviderInterface
 {
@@ -20,7 +21,8 @@ class NotifierProvider implements NotificationProviderInterface
         private MembersRepositoryInterface $membersRepository,
         private ActivationTokenFactoryInterface $tokenFactory,
         private MailerInterface $mailer,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private UrlGeneratorInterface $urlGenerator
     ) {
     }
 
@@ -45,7 +47,12 @@ class NotifierProvider implements NotificationProviderInterface
     private function getEmailText(string $token): string
     {
         $message = "Félicitations !\n";
-        $message .= "Votre compte a été créé avec succès. Cliquez sur ce lien pour activer votre compte : {$token}";
+        $message .= "Votre compte a été créé avec succès. Cliquez sur ce lien pour activer votre compte :\n";
+        $message .= $this->urlGenerator->generate(
+            'app_registration_confirmation',
+            ['token' => $token],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         return $message;
     }

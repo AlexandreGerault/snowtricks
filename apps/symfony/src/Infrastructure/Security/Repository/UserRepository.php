@@ -97,6 +97,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setEmail($member->email());
         $user->setUsername($member->username());
         $user->setPassword($this->hasher->hashPassword($user, $member->password()));
+        $user->setActive($member->isActive());
+
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
+
+    public function updateMember(Member $member): void
+    {
+        $user = $this->getUserByEmail($member->email());
+        $user->setEmail($member->email());
+        $user->setUsername($member->username());
+        $user->setPassword($this->hasher->hashPassword($user, $member->password()));
+        $user->setActive($member->isActive());
 
         $this->_em->persist($user);
         $this->_em->flush();

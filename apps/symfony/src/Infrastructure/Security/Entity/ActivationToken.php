@@ -15,7 +15,7 @@ class ActivationToken
     #[ORM\Column(type: "integer")]
     private int $id;
 
-    #[ORM\Column(type: "string", length: 180)]
+    #[ORM\Column(type: "text")]
     private string $token;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tokens')]
