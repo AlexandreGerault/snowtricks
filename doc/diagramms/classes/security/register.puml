@@ -1,0 +1,56 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package Domain {
+    class Register {
+        + execute(request: RegisterRequest, presenter: RegisterPresenterInterface)
+    }
+
+    class RegisterRequest {
+        + email: string
+    }
+
+    class RegisterResponse {}
+
+    interface RegisterPresenterInterface {
+        +handleUserNotFound()
+        +presents(response: RegisterResponse): void
+    }
+
+    interface MembersGateway {
+        + getMemberByEmail(email: string): Member
+    }
+
+    class Member {}
+
+    Member -* RegisterResponse
+
+    RegisterPresenterInterface ..> RegisterResponse
+    MembersGateway ..> Member
+
+    interface NotifierProviderInterface {
+        sendRegistrationRequest()
+    }
+}
+
+package UserInterface {
+    class RegisterController implements RegisterPresenterInterface {
+        + __invoke(): Response
+    }
+
+    RegisterController ..> Register: Executes
+    RegisterController ..> RegisterRequest: Creates
+}
+
+package Infrastructure {
+
+    class NotifierProvider {}
+    class MembersRepository {
+    }
+}
+
+NotifierProvider --|> NotifierProviderInterface
+Register -> NotifierProviderInterface: uses
+MembersRepository --|> MembersGateway
+
+@enduml
