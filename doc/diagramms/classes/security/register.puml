@@ -8,20 +8,28 @@ package Domain {
 
     class RegisterRequest {
         + email: string
+        + username: string
+        + password: string
     }
 
     class RegisterResponse {}
 
     interface RegisterPresenterInterface {
-        +handleUserNotFound()
+        +handleEmailAlreadyExists(): void
+        +handleUsernameAlreadyExists(): void
         +presents(response: RegisterResponse): void
     }
 
     interface MembersGateway {
         + getMemberByEmail(email: string): Member
+        + register(member: Member): void
     }
 
-    class Member {}
+    class Member {
+        - username: string
+        - email: string
+        - password: string
+    }
 
     Member -* RegisterResponse
 
