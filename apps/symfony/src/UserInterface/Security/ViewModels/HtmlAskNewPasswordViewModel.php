@@ -6,9 +6,9 @@ namespace App\UserInterface\Security\ViewModels;
 
 use Symfony\Component\Form\FormView;
 
-class RegisterViewModel
+class HtmlAskNewPasswordViewModel
 {
-    public string $redirect = "";
+    public ?string $redirect = null;
 
     public ?FormView $form;
 

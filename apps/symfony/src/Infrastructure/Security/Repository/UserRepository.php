@@ -103,6 +103,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * @throws OptimisticLockException
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     */
     public function updateMember(Member $member): void
     {
         $user = $this->getUserByEmail($member->email());

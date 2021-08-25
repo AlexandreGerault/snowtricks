@@ -7,8 +7,8 @@ namespace App\Infrastructure\Security\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "`activation_tokens`")]
-class ActivationToken
+#[ORM\Table(name: "`ask_new_password_tokens`")]
+class AskNewPasswordToken
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class ActivationToken
     #[ORM\Column(type: "text")]
     private string $token;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'activationTokens')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tokens')]
     private User $user;
 
     public function getId(): ?int

@@ -17,4 +17,9 @@ class InMemoryNotifierAdapter implements NotificationProviderInterface
     {
         $this->notifications[] = "Activate account";
     }
+
+    public function sendNewPasswordRequest(Member $member): void
+    {
+        $this->notifications[] = "Ask new password";
+    }
 }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Providers;
 
-use App\Infrastructure\Security\Contracts\Factory\ActivationTokenFactoryInterface;
+use App\Infrastructure\Security\Contracts\Factory\JwtTokenFactoryInterface;
 use App\Infrastructure\Security\Contracts\Repository\MembersRepositoryInterface;
 use App\Infrastructure\Security\Entity\ActivationToken;
+use App\Infrastructure\Security\Entity\AskNewPasswordToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Domain\Security\Entity\Member;
 use Domain\Security\Providers\NotificationProviderInterface;
@@ -19,7 +20,7 @@ class NotifierProvider implements NotificationProviderInterface
 {
     public function __construct(
         private MembersRepositoryInterface $membersRepository,
-        private ActivationTokenFactoryInterface $tokenFactory,
+        private JwtTokenFactoryInterface $tokenFactory,
         private MailerInterface $mailer,
         private EntityManagerInterface $em,
         private UrlGeneratorInterface $urlGenerator
@@ -32,19 +33,19 @@ class NotifierProvider implements NotificationProviderInterface
     public function sendRegistrationNotification(Member $member): void
     {
         $user = $this->membersRepository->getUserByEmail($member->email());
-        $token = $this->tokenFactory->createForUser($user);
+        $token = $this->tokenFactory->createActivationTokenForUser($user);
 
-        $this->storeToken($token);
+        $this->storeActivationToken($token);
 
         $this->mailer->send(
             (new Email())
                 ->from("no-reply@snowtricks")
                 ->to($member->email())
-                ->text($this->getEmailText($token->getToken()))
+                ->text($this->getRegistrationText($token->getToken()))
         );
     }
 
-    private function getEmailText(string $token): string
+    private function getRegistrationText(string $token): string
     {
         $message = "Félicitations !\n";
         $message .= "Votre compte a été créé avec succès. Cliquez sur ce lien pour activer votre compte :\n";
@@ -57,7 +58,44 @@ class NotifierProvider implements NotificationProviderInterface
         return $message;
     }
 
-    private function storeToken(ActivationToken $token): void
+    private function storeActivationToken(ActivationToken $token): void
+    {
+        $this->em->persist($token);
+        $this->em->flush();
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function sendNewPasswordRequest(Member $member): void
+    {
+        $user = $this->membersRepository->getUserByEmail($member->email());
+        $token = $this->tokenFactory->createNewPasswordTokenForUser($user);
+
+        $this->storeAskNewPasswordToken($token);
+
+        $this->mailer->send(
+            (new Email())
+                ->from("no-reply@snowtricks")
+                ->to($member->email())
+                ->text($this->getNewPasswordText($token->getToken()))
+        );
+    }
+
+    private function getNewPasswordText(string $token): string
+    {
+        $message = "Votre demande de nouveau mot de passe a bien été prise en compte.\n";
+        $message .= "Veuillez vous rendre à l'adresse suivante : ";
+        $message .= $this->urlGenerator->generate(
+            'app_ask_new_password',
+            ['token' => $token],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        return $message;
+    }
+
+    private function storeAskNewPasswordToken(AskNewPasswordToken $token): void
     {
         $this->em->persist($token);
         $this->em->flush();
