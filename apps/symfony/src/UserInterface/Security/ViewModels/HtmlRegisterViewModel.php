@@ -6,7 +6,7 @@ namespace App\UserInterface\Security\ViewModels;
 
 use Symfony\Component\Form\FormView;
 
-class RegisterViewModel
+class HtmlRegisterViewModel
 {
     public string $redirect = "";
 

@@ -87,7 +87,7 @@ class NotifierProvider implements NotificationProviderInterface
         $message = "Votre demande de nouveau mot de passe a bien été prise en compte.\n";
         $message .= "Veuillez vous rendre à l'adresse suivante : ";
         $message .= $this->urlGenerator->generate(
-            'app_ask_new_password',
+            'app_change_password',
             ['token' => $token],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UserInterface\Security\Controller;
 
 use App\Infrastructure\Security\Forms\RegistrationFormType;
-use App\UserInterface\Security\ViewModels\RegisterViewModel;
+use App\UserInterface\Security\ViewModels\HtmlRegisterViewModel;
 use Domain\Security\UseCases\Register\Register;
 use Domain\Security\UseCases\Register\RegisterPresenterInterface;
 use Domain\Security\UseCases\Register\RegisterRequest;
@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegisterController extends AbstractController implements RegisterPresenterInterface
 {
-    public function __construct(private RegisterViewModel $viewModel)
+    public function __construct(private HtmlRegisterViewModel $viewModel)
     {
     }
 

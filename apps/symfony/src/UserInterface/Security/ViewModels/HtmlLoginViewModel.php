@@ -6,7 +6,7 @@ namespace App\UserInterface\Security\ViewModels;
 
 use Domain\Security\Entity\Member;
 
-class LoginViewModel
+class HtmlLoginViewModel
 {
     public function __construct(
         public array $errors = [],
