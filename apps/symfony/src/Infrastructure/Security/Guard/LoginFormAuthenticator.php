@@ -39,7 +39,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-        private FlashBagInterface $flash,
         private Login $login
     ) {
         $this->viewModel = new LoginViewModel();

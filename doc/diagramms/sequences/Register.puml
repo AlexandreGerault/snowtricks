@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor Visitor
+
+Visitor -> UserInterface: Ask register page
+activate UserInterface
+UserInterface -> Visitor: Render form page
+deactivate UserInterface
+
+Visitor -> UserInterface: Submit form
+activate UserInterface
+UserInterface -> UserInterface: Validate form inputs
+UserInterface -> Domain: Execute UseCase
+activate Domain
+alt User already exist
+    Domain -> Infrastructure: Verify user does not exist
+    activate Infrastructure
+    Infrastructure -> Domain: Tell user does not already exit
+    deactivate Infrastructure
+    UserInterface -> Domain: Presents error
+    UserInterface -> Visitor: Render form page with errors
+else User does not already exist
+    Domain -> Infrastructure: Verify user does not exist
+    activate Infrastructure
+    Infrastructure -> Domain: Tell user does not already exit
+    deactivate Infrastructure
+    Domain -> Infrastructure: Create user from inputs
+    Domain -> Infrastructure: Send registration notification with activation link
+    UserInterface -> Domain: Presents response
+    UserInterface -> Visitor: Redirect to homepage
+end
+
+
+@enduml

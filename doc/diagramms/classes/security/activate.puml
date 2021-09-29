@@ -1,0 +1,60 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+package Domain {
+    class ActivateAccount {
+        + execute(request: RegisterRequest, presenter: RegisterPresenterInterface)
+    }
+
+    class ActivateAccountRequest {
+        + email: string
+    }
+
+    class ActivateAccountResponse {}
+
+    interface ActivateAccountPresenterInterface {
+        +handleUserNotFound()
+        +presents(response: ActivateAccountResponse): void
+    }
+
+    interface MembersGateway {
+        + getMemberByEmail(email: string): Member
+        + updateMember(member: Member): void
+    }
+
+    class Member {}
+
+    Member -* ActivateAccountResponse
+
+    ActivateAccountPresenterInterface ..> ActivateAccountResponse
+    MembersGateway ..> Member
+}
+
+package UserInterface {
+    class ActivateAccountController implements ActivateAccountPresenterInterface {
+        + __invoke(): Response
+    }
+
+    ActivateAccountController ..> ActivateAccount: Executes
+    ActivateAccountController ..> ActivateAccountRequest: Creates
+}
+
+package Infrastructure {
+    class MembersRepository {
+    }
+
+    class ActivationToken {
+    }
+
+    class User {
+    }
+
+    User *- ActivationToken
+
+    MembersRepository - User: uses
+}
+
+MembersRepository --|> MembersGateway
+
+@enduml

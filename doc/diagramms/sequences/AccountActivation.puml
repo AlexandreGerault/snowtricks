@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor Visitor
+
+Visitor -> UserInterface: Activation link
+UserInterface -> UserInterface: Read user's identifier (email) from Token
+UserInterface -> Domain: Execute use case with user's ID (email)
+activate Domain
+    alt User is found
+        Domain -> Infrastructure: Ask member from email
+        activate Infrastructure
+        Infrastructure -> Domain: Returns member
+        deactivate Infrastructure
+
+        Domain -> Domain: Activate Member
+
+        Domain -> Infrastructure: Update member
+        UserInterface -> Domain: Presents response
+        UserInterface -> Visitor: Redirect to homepage with success flash message
+    else User is not found
+        Domain -> Infrastructure: Ask member from email
+        activate Infrastructure
+        Infrastructure -> Domain: No member found
+        deactivate Infrastructure
+
+        UserInterface -> Domain: Present error
+
+        UserInterface -> Visitor: Redirect to homepage with error flash message
+    end
+deactivate Domain
+@enduml

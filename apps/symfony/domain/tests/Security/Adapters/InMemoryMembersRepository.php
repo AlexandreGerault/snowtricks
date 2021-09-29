@@ -26,4 +26,24 @@ class InMemoryMembersRepository implements MembersGateway
     {
         return $this->members[$email] ?? throw new UserNotFoundException();
     }
+
+    public function checkEmailIsFree(string $email): bool
+    {
+        return ! array_key_exists($email, $this->members);
+    }
+
+    public function checkUsernameIsFree(string $username): bool
+    {
+        return count(array_filter($this->members, fn (Member $member) => $member->username() === $username)) === 0;
+    }
+
+    public function register(Member $member): void
+    {
+        $this->members[$member->email()] = $member;
+    }
+
+    public function updateMember(Member $member): void
+    {
+        $this->members[$member->email()] = $member;
+    }
 }
