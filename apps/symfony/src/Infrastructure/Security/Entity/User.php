@@ -30,7 +30,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ActivationToken::class)]
-    private Collection $tokens;
+    private Collection $activationTokens;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: AskNewPasswordToken::class)]
+    private Collection $askNewPasswordTokens;
 
     #[ORM\Column(type: "boolean")]
     private bool $active = false;
@@ -135,9 +138,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTokens(): Collection
+    public function getActivationTokens(): Collection
     {
-        return $this->tokens;
+        return $this->activationTokens;
+    }
+
+    public function getNewPasswordTokens(): Collection
+    {
+        return $this->askNewPasswordTokens;
     }
 
     public function setActive(bool $isActive)

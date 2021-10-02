@@ -9,4 +9,6 @@ use Domain\Security\Entity\Member;
 interface NotificationProviderInterface
 {
     public function sendRegistrationNotification(Member $member): void;
+
+    public function sendNewPasswordRequest(Member $member): void;
 }

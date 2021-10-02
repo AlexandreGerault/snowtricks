@@ -43,4 +43,9 @@ class Member
     {
         return $this->active;
     }
+
+    public function changePassword(string $newPassword): void
+    {
+        $this->password = $newPassword;
+    }
 }

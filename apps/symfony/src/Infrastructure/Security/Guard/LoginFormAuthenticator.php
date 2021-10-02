@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security\Guard;
 
 use App\Infrastructure\Security\Contracts\Repository\MembersRepositoryInterface;
-use App\UserInterface\Security\ViewModels\LoginViewModel;
+use App\UserInterface\Security\ViewModels\HtmlLoginViewModel;
 use Domain\Security\Entity\Member;
 use Domain\Security\Providers\AuthProviderInterface;
 use Domain\Security\UseCases\Login\Login;
@@ -35,13 +35,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public const LOGIN_ROUTE = 'app_login';
 
-    private LoginViewModel $viewModel;
+    private HtmlLoginViewModel $viewModel;
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
         private Login $login
     ) {
-        $this->viewModel = new LoginViewModel();
+        $this->viewModel = new HtmlLoginViewModel();
     }
 
     public function authenticate(Request $request): PassportInterface

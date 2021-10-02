@@ -2,19 +2,20 @@
 
 namespace App\Infrastructure\Security\Factory;
 
-use App\Infrastructure\Security\Contracts\Factory\ActivationTokenFactoryInterface;
+use App\Infrastructure\Security\Contracts\Factory\JwtTokenFactoryInterface;
 use App\Infrastructure\Security\Entity\ActivationToken;
+use App\Infrastructure\Security\Entity\AskNewPasswordToken;
 use App\Infrastructure\Security\Entity\User;
 use DateTimeImmutable;
 use Lcobucci\JWT\Configuration;
 
-class ActivationTokenFactory implements ActivationTokenFactoryInterface
+class JwtTokenFactory implements JwtTokenFactoryInterface
 {
     public function __construct(private Configuration $configuration)
     {
     }
 
-    public function createForUser(User $user): ActivationToken
+    public function createActivationTokenForUser(User $user): ActivationToken
     {
         $token = new ActivationToken();
 
@@ -37,5 +38,15 @@ class ActivationTokenFactory implements ActivationTokenFactoryInterface
             ->getToken($this->configuration->signer(), $this->configuration->signingKey());
 
         return $token->toString();
+    }
+
+    public function createNewPasswordTokenForUser(User $user): AskNewPasswordToken
+    {
+        $token = new AskNewPasswordToken();
+
+        $token->setUser($user);
+        $token->setToken($this->generateToken($user->getEmail()));
+
+        return $token;
     }
 }
