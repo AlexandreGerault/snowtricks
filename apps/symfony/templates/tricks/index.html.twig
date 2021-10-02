@@ -3,5 +3,136 @@
 {% block title %}Liste des figures{% endblock %}
 
 {% block body %}
-    Page d'accueil
+    <header class="relative min-h-screen flex flex-col">
+        <div class="absolute inset-0">
+            <img class="h-full w-full object-cover"
+                 src="{{ asset('images/hero.webp') }}"
+                 alt="Montagnes enneigées avec un snowboarder qui fait un flip"
+                 width="1619" height="1080"
+            />
+            <div class="absolute inset-0 bg-blue-700 mix-blend-multiply"></div>
+        </div>
+
+        <div class="relative">
+            <nav x-data="{ open: false }" class="relative">
+                <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                    <div class="relative flex items-center justify-between h-16">
+                        <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                            <!-- Mobile menu button-->
+                            <button @click="open = ! open"
+                                    x-bind:aria-label="{'Ouvrir le menu': !open, 'Fermer le menu': open}"
+                                    class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-200 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                    <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M4 6h16M4 12h16M4 18h16"/>
+                                    <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden"
+                                          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-between">
+                            <div class="flex-shrink-0 flex items-center">
+                                <a class="text-xl text-white" href="https://osman.alexandre-gerault.fr/">
+                                    Snowtricks
+                                </a>
+                            </div>
+                            <div class="hidden sm:block sm:ml-6">
+                                <div class="flex space-x-4 text-white">
+                                    <ul id="menu-header" class="flex space-x-4">
+                                        <li id="menu-item-9"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-9">
+                                            <a href="https://osman.alexandre-gerault.fr/"
+                                               aria-current="page">Accueil</a></li>
+                                        <li id="menu-item-10"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10">
+                                            <a href="https://osman.alexandre-gerault.fr/blog/">Blog</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile menu, show/hide based on menu state. -->
+
+                <div class="sm:hidden absolute z-10 w-full px-4" id="mobile-menu"
+                     x-show="open"
+                     x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 transform scale-90"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-300"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-90">
+                    <div class="menu-header-container">
+                        <ul id="menu-header-1"
+                            class="px-2 pt-2 pb-3 space-y-1 flex flex-col space-y-4 items-center justify-center text-white">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-9">
+                                <a href="https://osman.alexandre-gerault.fr/" aria-current="page">Accueil</a></li>
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10"><a
+                                        href="https://osman.alexandre-gerault.fr/blog/">Blog</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="relative flex-grow flex flex-col space-y-8 items-center justify-center">
+            <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                <span class="block text-white">Snowtricks</span>
+            </h1>
+            <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+                <span class="block text-white max-w-3xl text-center">
+                    L'annuaire en ligne des figures de snowboard par des passionnés pour des passionés
+                </span>
+            </h2>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="grid gap-4 xl:grid-cols-4 py-12">
+            {% for trick in vm.tricks %}
+                <article class="flex flex-col rounded-lg shadow-lg overflow-hidden">
+                    <div class="flex-shrink-0">
+                        <img class="h-48 w-full object-cover"
+                             src="{{ trick.imageUrl }}"
+                             alt="Photo d'une figure de {{ trick.name }}"
+                        />
+                    </div>
+                    <div class="flex-1 bg-white p-6 flex flex-col justify-between">
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-indigo-600">
+                                <a href="#" class="hover:underline">
+                                    Nom du groupe
+                                </a>
+                            </p>
+                            <div class="flex gap-2 justify-between">
+                                <a href="#" class="block mt-2 hover:underline">
+                                    <p class="text-xl font-semibold text-gray-900">
+                                        {{ trick.name }}
+                                    </p>
+                                </a>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <div class="flex gap-1">
+                                        <a href="#">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
+                                        </a>
+
+                                        <a href="#">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    </main>
 {% endblock %}
