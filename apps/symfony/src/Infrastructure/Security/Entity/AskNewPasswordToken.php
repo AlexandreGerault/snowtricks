@@ -18,7 +18,7 @@ class AskNewPasswordToken
     #[ORM\Column(type: "text")]
     private string $token;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tokens')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'askNewPasswordTokens')]
     private User $user;
 
     public function getId(): ?int
