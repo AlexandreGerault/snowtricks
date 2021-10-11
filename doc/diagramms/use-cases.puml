@@ -9,21 +9,23 @@ Member -|> Visitor
 
 package Security {
     usecase "Login" as Login
-    usecase "Create a member account" as Register
+    usecase "Register" as Register
     usecase "Logout" as Logout
+    usecase "Ask new password" as AskNewPassword
+    usecase "Change password" as ChangePassword
 }
 
 package Community {
-    usecase "Add a figure to the figure's directory" as FigureCreate
-    usecase "Edit a figure's from the directory" as FigureEdit
-    usecase "Remove a figure's from the directory" as FigureDelete
-    usecase "Post a message in the discussion space of a figure" as FigureMessageCreate
+    usecase "Add a trick to the trick's directory" as FigureCreate
+    usecase "Edit a trick's from the directory" as FigureEdit
+    usecase "Remove a trick's from the directory" as FigureDelete
+    usecase "Post a message in the discussion space of a trick" as FigureMessageCreate
 }
 
 package Public {
-    usecase "List snowboard figures" as FiguresIndex
-    usecase "See figure's details" as FiguresShow
-    usecase "See figure's discussion messages" as FiguresReadMessages
+    usecase "List snowboard tricks" as FiguresIndex
+    usecase "See trick's details" as FiguresShow
+    usecase "See trick's discussion messages" as FiguresReadMessages
 }
 
 Visitor --> FiguresIndex
@@ -37,4 +39,7 @@ Member --> FigureCreate
 Member --> FigureEdit
 Member --> FigureDelete
 Member --> FigureMessageCreate
+Member --> AskNewPassword
+Member --> ChangePassword
+
 @enduml
