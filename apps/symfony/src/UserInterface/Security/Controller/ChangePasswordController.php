@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UserInterface\Security\Controller;
 
-use App\Infrastructure\Security\Forms\ChangePasswordFormType;
+use App\UserInterface\Security\Forms\ChangePasswordFormType;
 use App\UserInterface\Security\ViewModels\HtmlChangePasswordViewModel;
 use Domain\Security\UseCases\ChangePassword\ChangePassword;
 use Domain\Security\UseCases\ChangePassword\ChangePasswordPresenterInterface;

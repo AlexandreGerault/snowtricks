@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security\Forms;
+namespace App\UserInterface\Security\Forms;
 
 use Domain\Security\UseCases\Register\RegisterRequest;
 use Symfony\Component\Form\AbstractType;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UserInterface\Security\Controller;
 
-use App\Infrastructure\Security\Forms\AskNewPasswordFormType;
+use App\UserInterface\Security\Forms\AskNewPasswordFormType;
 use App\UserInterface\Security\ViewModels\HtmlAskNewPasswordViewModel;
 use Domain\Security\UseCases\AskNewPassword\AskNewPassword;
 use Domain\Security\UseCases\AskNewPassword\AskNewPasswordPresenterInterface;
