@@ -1,11 +1,5 @@
-import { startStimulusApp } from '@symfony/stimulus-bridge';
+import Alpine from 'alpinejs'
 
-// Registers Stimulus controllers from controllers.json and in the controllers/ directory
-export const app = startStimulusApp(require.context(
-    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
-    true,
-    /\.(j|t)sx?$/
-));
+window.Alpine = Alpine
 
-// register any custom, 3rd party controllers here
-// app.register('some_controller_name', SomeImportedController);
+Alpine.start()
