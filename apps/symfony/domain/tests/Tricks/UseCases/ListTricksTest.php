@@ -22,8 +22,8 @@ class ListTricksTest extends TestCase implements ListTricksPresenterInterface
         parent::setUp();
 
         $repository = new InMemoryTricksRepository([
-            new Trick(name: "Regular", illustrations: ["/images/uploads/tricks/regular.jpg"]),
-            new Trick(name: "Indy", illustrations: ["/images/uploads/tricks/indy.jpg"]),
+            new Trick(name: "Regular", illustrations: ["/images/uploads/tricks/regular.jpg"], thumbnail: "/images/uploads/tricks/regular-thumbnail.jpg"),
+            new Trick(name: "Indy", illustrations: ["/images/uploads/tricks/indy.jpg"], thumbnail: "/images/uploads/tricks/indy-thumbnail.jpg"),
         ]);
         $this->useCase = new ListTricks($repository);
     }

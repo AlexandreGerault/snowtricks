@@ -7,11 +7,13 @@ namespace Domain\Tests\Tricks\UseCases;
 use Domain\Tests\Tricks\Adapters\InMemoryTricksRepository;
 use Domain\Tricks\Entity\Trick;
 use Domain\Tricks\Exceptions\TrickAlreadyExistsException;
+use Domain\Tricks\Gateway\IllustrationsGateway;
 use Domain\Tricks\Gateway\TricksGateway;
 use Domain\Tricks\UseCases\RegisterNewTrick\RegisterNewTrick;
 use Domain\Tricks\UseCases\RegisterNewTrick\RegisterNewTrickPresenterInterface;
 use Domain\Tricks\UseCases\RegisterNewTrick\RegisterNewTrickRequest;
 use Domain\Tricks\UseCases\RegisterNewTrick\RegisterNewTrickResponse;
+use Domain\Tricks\ValueObject\File;
 use Generator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -27,10 +29,23 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         parent::setUp();
 
         $this->tricksGateway = new InMemoryTricksRepository([
-            new Trick(name: "Regular", illustrations: ["/images/uploads/tricks/regular.jpg"]),
-            new Trick(name: "Indy", illustrations: ["/images/uploads/tricks/indy.jpg"]),
+            new Trick(
+                name: "Regular",
+                illustrations: ["/images/uploads/tricks/regular.jpg"],
+                thumbnail: "/images/uploads/tricks/indy.jpg"
+            ),
+            new Trick(
+                name: "Indy",
+                illustrations: ["/images/uploads/tricks/indy.jpg"],
+                thumbnail: "/images/uploads/tricks/indy.jpg"
+            ),
         ]);
-        $this->useCase = new RegisterNewTrick($this->tricksGateway);
+        $illustrationGateway = new class implements IllustrationsGateway {
+            public function store(string $path, string $filename, string $content): void
+            {
+            }
+        };
+        $this->useCase = new RegisterNewTrick($this->tricksGateway, $illustrationGateway);
     }
 
     /**
@@ -42,8 +57,9 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
             name: "MyTrick",
             description: "Ma description",
             category: "Aucune idée de quoi mettre",
-            illustrations: ["/images/uploads/tricks/my-trick.jpg"],
-            videos: []
+            videosUrls: [],
+            illustrations: [new File("/images/uploads/tricks/my-trick.jpg", '')],
+            thumbnail: new File("/images/uploads/tricks/my-trick-2.png", '')
         );
 
         $this->useCase->executes($request, $this);
@@ -61,8 +77,9 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
             name: "Regular",
             description: "Ma description",
             category: "Aucune idée de quoi mettre",
+            videosUrls: [],
             illustrations: ["/images/uploads/tricks/my-trick.jpg"],
-            videos: []
+            thumbnail: new File("/images/uploads/tricks/my-trick-2.png", '')
         );
 
         $this->useCase->executes($request, $this);
@@ -75,15 +92,17 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         string $name,
         string $description,
         string $category,
-        array $illustrations
+        array $illustrations,
+        File $thumbnail
     ) {
         $this->expectException(InvalidArgumentException::class);
         $request = new RegisterNewTrickRequest(
+            thumbnail: $thumbnail,
             name: $name,
             description: $description,
             category: $category,
-            illustrations: $illustrations,
-            videos: []
+            videosUrls: [],
+            illustrations: $illustrations
         );
 
         $this->useCase->executes($request, $this);
@@ -96,9 +115,10 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
 
     public function provideInvalidDataForTrick(): Generator
     {
-        yield ["", "Description", "category", ["http://image"]];
-        yield ["Name", "", "category", ["http://image"]];
-        yield ["Name", "Description", "", ["http://image"]];
-        yield ["Name", "Description", "Category", []];
+        yield ["", "Description", "category", [new File("http://image", "")], new File("/images/uploads/tricks/my-trick-2.png", '')];
+        yield ["Name", "", "category", [new File("http://image", "")], new File("/images/uploads/tricks/my-trick-2.png", '')];
+        yield ["Name", "Description", "", [new File("http://image", "")], new File("/images/uploads/tricks/my-trick-2.png", '')];
+        yield ["Name", "Description", "Category", [], new File("/images/uploads/tricks/my-trick-2.png", '')];
+        yield ["Name", "Description", "Category", [new File("http://image", "")], new File("", "")];
     }
 }
