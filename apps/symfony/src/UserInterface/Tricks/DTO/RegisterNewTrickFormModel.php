@@ -23,18 +23,12 @@ class RegisterNewTrickFormModel
 
     /**
      * @var File[]
-     * @Assert\All({
-     *      @Assert\Image(maxSize='1024k')
-     *  })
      */
     #[Assert\Count(min: 1)]
     public ?array $illustrations;
 
     /**
      * @var string[]
-     * @Assert\All({
-     *      @Assert\Url
-     *  })
      */
     #[Assert\Count(min: 1)]
     public ?array $videos;
