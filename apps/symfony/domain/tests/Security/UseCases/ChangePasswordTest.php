@@ -29,7 +29,7 @@ class ChangePasswordTest extends TestCase implements ChangePasswordPresenterInte
                 new Member(
                     "user@email",
                     "username",
-                    password_hash("password", PASSWORD_ARGON2ID)
+                    "password"
                 )
             ]
         );

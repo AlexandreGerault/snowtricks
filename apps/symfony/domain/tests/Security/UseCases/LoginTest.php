@@ -30,7 +30,7 @@ class LoginTest extends TestCase implements LoginPresenterInterface
                 new Member(
                     "user@email",
                     "username",
-                    password_hash("password", PASSWORD_ARGON2ID)
+                    "password"
                 )
             ]
         );
