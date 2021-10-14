@@ -54,12 +54,12 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
     public function test_it_creates_the_trick(): void
     {
         $request = new RegisterNewTrickRequest(
+            thumbnail: new File("/images/uploads/tricks/my-trick-2.png", ''),
             name: "MyTrick",
             description: "Ma description",
             category: "Aucune idée de quoi mettre",
             videosUrls: [],
-            illustrations: [new File("/images/uploads/tricks/my-trick.jpg", '')],
-            thumbnail: new File("/images/uploads/tricks/my-trick-2.png", '')
+            illustrations: [new File("/images/uploads/tricks/my-trick.jpg", '')]
         );
 
         $this->useCase->executes($request, $this);
@@ -74,12 +74,12 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         $this->expectException(TrickAlreadyExistsException::class);
 
         $request = new RegisterNewTrickRequest(
+            thumbnail: new File("/images/uploads/tricks/my-trick-2.png", ''),
             name: "Regular",
             description: "Ma description",
             category: "Aucune idée de quoi mettre",
             videosUrls: [],
-            illustrations: ["/images/uploads/tricks/my-trick.jpg"],
-            thumbnail: new File("/images/uploads/tricks/my-trick-2.png", '')
+            illustrations: ["/images/uploads/tricks/my-trick.jpg"]
         );
 
         $this->useCase->executes($request, $this);
@@ -108,11 +108,6 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         $this->useCase->executes($request, $this);
     }
 
-    public function presents(RegisterNewTrickResponse $response): void
-    {
-        $this->response = $response;
-    }
-
     public function provideInvalidDataForTrick(): Generator
     {
         yield ["", "Description", "category", [new File("http://image", "")], new File("/images/uploads/tricks/my-trick-2.png", '')];
@@ -120,5 +115,10 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         yield ["Name", "Description", "", [new File("http://image", "")], new File("/images/uploads/tricks/my-trick-2.png", '')];
         yield ["Name", "Description", "Category", [], new File("/images/uploads/tricks/my-trick-2.png", '')];
         yield ["Name", "Description", "Category", [new File("http://image", "")], new File("", "")];
+    }
+
+    public function presents(RegisterNewTrickResponse $response): void
+    {
+        $this->response = $response;
     }
 }
