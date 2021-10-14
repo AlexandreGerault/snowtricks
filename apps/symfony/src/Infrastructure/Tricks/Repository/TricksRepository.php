@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Tricks\Repository;
 
 use App\Infrastructure\Tricks\Contracts\Repository\CategoriesRepositoryInterface;
-use App\Infrastructure\Tricks\Entity\Category;
 use App\Infrastructure\Tricks\Entity\Illustration;
 use App\Infrastructure\Tricks\Entity\Trick;
 use App\Infrastructure\Tricks\Entity\Video;
@@ -28,6 +27,7 @@ class TricksRepository extends ServiceEntityRepository implements TricksGateway
         $query = $this->createQueryBuilder("t");
 
         $results = $query
+            ->join('t.category', 'category')
             ->join('t.illustrations', 'illustrations')
             ->join('t.videos', 'v')
             ->orderBy('t.name', 'DESC')
@@ -43,6 +43,10 @@ class TricksRepository extends ServiceEntityRepository implements TricksGateway
                     ->map(fn (Illustration $illustration) => $illustration->getPath())
                     ->toArray(),
                 category: $trick->getCategory()->getName(),
+                videos: $trick
+                    ->getVideoLinks()
+                    ->map(fn (Video $video) => $video->getLink())
+                    ->toArray(),
                 thumbnail: $trick->getThumbnail()->getPath()
             );
         }, $results);
