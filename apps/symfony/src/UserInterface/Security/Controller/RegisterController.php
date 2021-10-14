@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UserInterface\Security\Controller;
 
-use App\Infrastructure\Security\Forms\RegistrationFormType;
+use App\UserInterface\Security\Forms\RegistrationFormType;
 use App\UserInterface\Security\ViewModels\HtmlRegisterViewModel;
 use Domain\Security\UseCases\Register\Register;
 use Domain\Security\UseCases\Register\RegisterPresenterInterface;

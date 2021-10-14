@@ -35,7 +35,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
                 new Member(
                     "user@email",
                     "username",
-                    password_hash("password", PASSWORD_ARGON2ID)
+                    "password"
                 )
             ]
         );

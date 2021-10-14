@@ -32,7 +32,7 @@ class AskNewPasswordTest extends TestCase implements AskNewPasswordPresenterInte
                 new Member(
                     "user@email",
                     "username",
-                    password_hash("password", PASSWORD_ARGON2ID)
+                    "password"
                 )
             ]
         );

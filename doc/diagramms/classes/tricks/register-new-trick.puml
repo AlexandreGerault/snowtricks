@@ -1,0 +1,67 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package Domain {
+    class Register {
+        + execute(request: RegisterNewRequest, presenter: RegisterNewTrickPresenterInterface)
+    }
+
+    class RegisterNewRequest {
+        + email: string
+        + username: string
+        + password: string
+    }
+
+    class RegisterNewTrickResponse {}
+
+    interface RegisterNewTrickPresenterInterface {
+        +handleEmailAlreadyExists(): void
+        +handleUsernameAlreadyExists(): void
+        +presents(response: RegisterNewTrickResponse): void
+    }
+
+    interface TricksGateway {
+        + getMemberByEmail(email: string): Member
+        + register(member: Member): void
+    }
+
+    class Trick {
+        - username: string
+        - email: string
+        - password: string
+    }
+
+    Trick -* RegisterNewTrickResponse
+
+    RegisterNewTrickPresenterInterface ..> RegisterNewTrickResponse
+    TricksGateway ..> Trick
+}
+
+package UserInterface {
+    class RegisterNewTrickController implements RegisterNewTrickPresenterInterface {
+        + __invoke(): Response
+    }
+
+    class RegisterNewTrickFormType {}
+
+    class RegisterNewTrickFormModel {}
+
+    RegisterNewTrickController ..> Register: Executes
+    RegisterNewTrickController ..> RegisterNewRequest: Creates
+    RegisterNewTrickFormType .> RegisterNewTrickFormModel: uses
+    RegisterNewTrickController .> RegisterNewTrickFormType: uses
+}
+
+package Infrastructure {
+    class TrickRepository {}
+
+    class CategoryRepository {}
+
+    class Category {}
+
+     Category <. CategoryRepository: uses
+}
+
+RegisterNewTrickFormModel .> Category: uses
+
+@enduml

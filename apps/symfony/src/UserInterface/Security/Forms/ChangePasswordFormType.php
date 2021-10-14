@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security\Forms;
+namespace App\UserInterface\Security\Forms;
 
 use Domain\Security\UseCases\ChangePassword\ChangePasswordRequest;
 use Symfony\Component\Form\AbstractType;

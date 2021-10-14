@@ -11,6 +11,6 @@ class AuthAdapter implements AuthProviderInterface
 {
     public function check(Member $member, string $plainPassword): bool
     {
-        return password_verify($plainPassword, $member->password());
+        return $plainPassword === $member->password();
     }
 }

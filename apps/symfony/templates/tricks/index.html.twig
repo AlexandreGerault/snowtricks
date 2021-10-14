@@ -34,7 +34,7 @@
                         </div>
                         <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-between">
                             <div class="flex-shrink-0 flex items-center">
-                                <a class="text-xl text-white" href="https://osman.alexandre-gerault.fr/">
+                                <a class="text-xl text-white" href="{{ path('app_home') }}">
                                     Snowtricks
                                 </a>
                             </div>
@@ -43,11 +43,14 @@
                                     <ul id="menu-header" class="flex space-x-4">
                                         <li id="menu-item-9"
                                             class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-9">
-                                            <a href="https://osman.alexandre-gerault.fr/"
+                                            <a href="{{ path('app_home') }}"
                                                aria-current="page">Accueil</a></li>
                                         <li id="menu-item-10"
                                             class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10">
-                                            <a href="https://osman.alexandre-gerault.fr/blog/">Blog</a></li>
+                                            <a href="{{ path('ajouter-une-nouvelle-figure') }}">
+                                                Ajouter
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -69,9 +72,9 @@
                         <ul id="menu-header-1"
                             class="px-2 pt-2 pb-3 space-y-1 flex flex-col space-y-4 items-center justify-center text-white">
                             <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-9">
-                                <a href="https://osman.alexandre-gerault.fr/" aria-current="page">Accueil</a></li>
+                                <a href="{{ path('app_home') }}" aria-current="page">Accueil</a></li>
                             <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10"><a
-                                        href="https://osman.alexandre-gerault.fr/blog/">Blog</a></li>
+                                        href="{{ path('ajouter-une-nouvelle-figure') }}">Ajouter</a></li>
                         </ul>
                     </div>
                 </div>
@@ -91,12 +94,12 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section class="grid gap-4 xl:grid-cols-4 py-12">
+        <section class="grid gap-4 xl:grid-cols-4 md:grid-cols-2 py-12">
             {% for trick in vm.tricks %}
                 <article class="flex flex-col rounded-lg shadow-lg overflow-hidden">
                     <div class="flex-shrink-0">
                         <img class="h-48 w-full object-cover"
-                             src="{{ trick.imageUrl }}"
+                             src="illustrations/{{ trick.name }}/{{ trick.thumbnailUrl }}"
                              alt="Photo d'une figure de {{ trick.name }}"
                         />
                     </div>
@@ -104,7 +107,7 @@
                         <div class="flex-1">
                             <p class="text-sm font-medium text-indigo-600">
                                 <a href="#" class="hover:underline">
-                                    Nom du groupe
+                                    {{ trick.category ?? "Groupe inconnu" }}
                                 </a>
                             </p>
                             <div class="flex gap-2 justify-between">

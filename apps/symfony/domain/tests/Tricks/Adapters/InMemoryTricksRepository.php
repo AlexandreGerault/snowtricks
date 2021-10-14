@@ -37,4 +37,13 @@ class InMemoryTricksRepository implements TricksGateway
     {
         $this->tricks[] = $trick;
     }
+
+    public function isNameAvailable(string $name): bool
+    {
+        $matching = array_filter($this->tricks, function (Trick $trick) use ($name) {
+            return $trick->getName() === $name;
+        });
+
+        return count($matching) === 0;
+    }
 }

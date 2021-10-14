@@ -4,11 +4,18 @@ services:
   mysql:
     image: mysql:8.0
     restart: on-failure
+    container_name: ${MYSQL_CONTAINER}
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
     ports:
       - '${MYSQL_PORT}:3306'
+    expose:
+      - '3306'
+    volumes:
+      - database-volume:/var/lib/mysql
 
   nginx:
     image: nginx:latest
@@ -30,4 +37,19 @@ services:
     restart: on-failure
     env_file:
       - .env
+    environment:
+      DATABASE_URL: 'mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_CONTAINER}:3306/${MYSQL_DATABASE}?serverVersion=8.0.24'
     user: ${LOCAL_USER}
+    depends_on:
+      - mailer
+
+  mailer:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    restart: on-failure
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  database-volume:

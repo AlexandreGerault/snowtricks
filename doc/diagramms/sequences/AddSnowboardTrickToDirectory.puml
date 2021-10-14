@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor Member
+
+Member -> UserInterface: Submit trick form
+activate UserInterface
+UserInterface -> UserInterface: Validate form inputs
+
+alt Inputs are invalid
+    UserInterface -> Member: Redirect on trick's creation page with error messages
+else Inputs are valid
+    UserInterface -> Domain: Execute use-case
+    activate Domain
+    Domain -> Domain: Validate input data
+    Domain -> Infrastructure: Check no trick with given name already exists
+    alt Data does not pass business rules
+        Domain -> Domain: Throw FigureNameAlreadyExistException
+        UserInterface -> Domain:  Catch exception
+        UserInterface -> Member: Redirect on creation form with error message
+    else Data are correct
+        Domain -> Infrastructure: Add the trick to the directory
+        UserInterface -> Domain: Presents response
+        UserInterface -> Member: Redirect on tricks list page with success message
+    end
+end
+
+@enduml
