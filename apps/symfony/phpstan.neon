@@ -1,0 +1,7 @@
+parameters:
+    paths:
+        - domain
+        - src
+        - tests
+    level: 8
+    checkMissingIterableValueType: false
