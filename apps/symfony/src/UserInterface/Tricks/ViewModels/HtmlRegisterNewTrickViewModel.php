@@ -6,7 +6,8 @@ namespace App\UserInterface\Tricks\ViewModels;
 
 use Symfony\Component\Form\FormView;
 
-class HtmlRegisterNewTrickViewModel {
+class HtmlRegisterNewTrickViewModel
+{
     public FormView $form;
     public array $errors = [];
 

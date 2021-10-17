@@ -40,7 +40,7 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
                 thumbnail: "/images/uploads/tricks/indy.jpg"
             ),
         ]);
-        $illustrationGateway = new class implements IllustrationsGateway {
+        $illustrationGateway = new class() implements IllustrationsGateway {
             public function store(string $path, string $filename, string $content): void
             {
             }

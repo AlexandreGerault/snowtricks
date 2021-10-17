@@ -90,8 +90,7 @@ class TricksRepository extends ServiceEntityRepository implements TricksGateway
 
         $trickEntity->setThumbnail($thumbnail);
 
-        foreach ($trick->getIllustrationsPath() as $path)
-        {
+        foreach ($trick->getIllustrationsPath() as $path) {
             $illustration = new Illustration();
             $illustration->setPath($path);
             $illustration->setTrick($trickEntity);
@@ -100,8 +99,7 @@ class TricksRepository extends ServiceEntityRepository implements TricksGateway
             $this->_em->persist($illustration);
         }
 
-        foreach ($trick->getVideoLinks() as $link)
-        {
+        foreach ($trick->getVideoLinks() as $link) {
             $video = new Video();
             $video->setLink($link);
             $video->setTrick($trickEntity);

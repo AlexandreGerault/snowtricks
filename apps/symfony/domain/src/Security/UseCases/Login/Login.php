@@ -10,7 +10,9 @@ use Domain\Security\Providers\AuthProviderInterface;
 
 class Login
 {
-    public function __construct(private MembersGateway $membersGateway, private AuthProviderInterface $auth) {}
+    public function __construct(private MembersGateway $membersGateway, private AuthProviderInterface $auth)
+    {
+    }
 
     public function execute(LoginRequest $request, LoginPresenterInterface $presenter)
     {
@@ -28,7 +30,7 @@ class Login
         }
 
 
-        if ( ! $this->auth->check($member, $password)) {
+        if (! $this->auth->check($member, $password)) {
             $response = new LoginResponse();
             $response->addError('WrongCredentials');
             $presenter->presents($response);

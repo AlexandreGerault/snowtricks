@@ -6,7 +6,9 @@ namespace Domain\Security\UseCases\Login;
 
 class LoginRequest
 {
-    public function __construct(protected string $email, protected string $password) {}
+    public function __construct(protected string $email, protected string $password)
+    {
+    }
 
     public function getEmail(): string
     {

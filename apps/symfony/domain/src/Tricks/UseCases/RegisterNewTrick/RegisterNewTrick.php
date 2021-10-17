@@ -21,7 +21,7 @@ class RegisterNewTrick
      */
     public function executes(RegisterNewTrickRequest $request, RegisterNewTrickPresenterInterface $presenter): void
     {
-        if ( ! $this->tricksGateway->isNameAvailable($request->name)) {
+        if (! $this->tricksGateway->isNameAvailable($request->name)) {
             throw new TrickAlreadyExistsException("A trick with this name already exists");
         }
 
@@ -31,8 +31,7 @@ class RegisterNewTrick
             $request->thumbnail->content
         );
 
-        foreach ($request->illustrations as $illustration)
-        {
+        foreach ($request->illustrations as $illustration) {
             $this->illustrationsGateway->store(
                 "illustrations/{$request->name}",
                 $illustration->filename,
