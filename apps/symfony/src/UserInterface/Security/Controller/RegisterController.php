@@ -40,12 +40,13 @@ class RegisterController extends AbstractController implements RegisterPresenter
         }
 
         $this->viewModel->form = $form->createView();
+
         return $this->render('security/register.html.twig', ['vm' => $this->viewModel]);
     }
 
     public function handleEmailAlreadyInUse(): void
     {
-        $this->viewModel->errors[] = "Cette adresse mail est déjà utilisée.";
+        $this->viewModel->errors[] = 'Cette adresse mail est déjà utilisée.';
     }
 
     public function handleUsernameAlreadyInUse(): void

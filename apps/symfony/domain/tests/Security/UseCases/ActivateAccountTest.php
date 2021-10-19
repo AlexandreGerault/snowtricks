@@ -27,31 +27,31 @@ class ActivateAccountTest extends TestCase implements ActivateAccountPresenterIn
         $this->repository = new InMemoryMembersRepository(
             [
                 new Member(
-                    "user@email",
-                    "username",
-                    "password"
-                )
+                    'user@email',
+                    'username',
+                    'password'
+                ),
             ]
         );
         $this->errors = [];
     }
 
-    public function test_a_user_is_activated()
+    public function testAUserIsActivated()
     {
         $useCase = new ActivateAccount($this->repository);
 
-        $activateAccountRequest = new ActivateAccountRequest("user@email");
+        $activateAccountRequest = new ActivateAccountRequest('user@email');
         $useCase->execute($activateAccountRequest, $this);
 
         $this->assertInstanceOf(Member::class, $this->response->member);
         $this->assertTrue($this->response->member->isActive());
     }
 
-    public function test_if_fails_if_email_does_not_match_a_user()
+    public function testIfFailsIfEmailDoesNotMatchAUser()
     {
         $useCase = new ActivateAccount($this->repository);
 
-        $activateAccountRequest = new ActivateAccountRequest("does-not-exist@email");
+        $activateAccountRequest = new ActivateAccountRequest('does-not-exist@email');
         $useCase->execute($activateAccountRequest, $this);
 
         $this->assertCount(1, $this->errors);
@@ -64,6 +64,6 @@ class ActivateAccountTest extends TestCase implements ActivateAccountPresenterIn
 
     public function handleUserNotFound(): void
     {
-        $this->errors[] = "User already exists";
+        $this->errors[] = 'User already exists';
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Security\UseCases\ChangePassword;
 
-use Domain\Security\Entity\Member;
 use Domain\Security\Exceptions\UserNotFoundException;
 use Domain\Security\Gateway\MembersGateway;
 
@@ -14,7 +13,7 @@ class ChangePassword
     {
     }
 
-    public function execute(ChangePasswordRequest $request, ChangePasswordPresenterInterface $presenter)
+    public function execute(ChangePasswordRequest $request, ChangePasswordPresenterInterface $presenter): void
     {
         $response = new ChangePasswordResponse();
 
@@ -26,6 +25,7 @@ class ChangePassword
             $response->member = $member;
         } catch (UserNotFoundException $e) {
             $presenter->handleUserNotFound();
+
             return;
         }
 

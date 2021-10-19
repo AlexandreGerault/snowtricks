@@ -20,7 +20,7 @@ class ActivateAccountController extends AbstractController implements ActivateAc
     {
     }
 
-    #[Route('/confirmation-inscription', name: "app_registration_confirmation")]
+    #[Route('/confirmation-inscription', name: 'app_registration_confirmation')]
     public function __invoke(Request $request): Response
     {
         $token = $this->jwtConfiguration->parser()->parse($request->query->get('token'));
@@ -29,7 +29,7 @@ class ActivateAccountController extends AbstractController implements ActivateAc
 
         $this->activateAccount->execute($activateAccountRequest, $this);
 
-        return $this->redirectToRoute("app_home");
+        return $this->redirectToRoute('app_home');
     }
 
     public function presents(ActivateAccountResponse $response): void

@@ -33,11 +33,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
      * @throws ORMException
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
@@ -51,7 +52,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function getUserByEmail(string $email): ?User
     {
-        return $this->createQueryBuilder("m")
+        return $this->createQueryBuilder('m')
                     ->where('m.email = :email')
                     ->setParameter('email', $email)
                     ->getQuery()
@@ -66,7 +67,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $user = $this->getUserByEmail($email);
 
-        if (! $user) {
+        if (!$user) {
             throw new UserNotFoundException();
         }
 
@@ -77,14 +78,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $user = $this->findBy(['email' => $email]);
 
-        return ! $user;
+        return !$user;
     }
 
     public function checkUsernameIsFree(string $username): bool
     {
         $user = $this->findBy(['username' => $username]);
 
-        return ! $user;
+        return !$user;
     }
 
     /**

@@ -14,19 +14,21 @@ class Register
     {
     }
 
-    public function execute(RegisterRequest $request, RegisterPresenterInterface $presenter)
+    public function execute(RegisterRequest $request, RegisterPresenterInterface $presenter): void
     {
         $username = $request->username;
         $email = $request->email;
         $password = $request->password;
 
-        if (! $this->gateway->checkEmailIsFree($email)) {
+        if (!$this->gateway->checkEmailIsFree($email)) {
             $presenter->handleEmailAlreadyInUse();
+
             return;
         }
 
-        if (! $this->gateway->checkUsernameIsFree($username)) {
+        if (!$this->gateway->checkUsernameIsFree($username)) {
             $presenter->handleUsernameAlreadyInUse();
+
             return;
         }
 

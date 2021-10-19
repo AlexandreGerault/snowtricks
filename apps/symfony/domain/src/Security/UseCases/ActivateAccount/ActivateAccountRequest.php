@@ -6,7 +6,7 @@ namespace Domain\Security\UseCases\ActivateAccount;
 
 class ActivateAccountRequest
 {
-    public function __construct(public string $email = "")
+    public function __construct(public string $email = '')
     {
     }
 }

@@ -7,15 +7,15 @@ namespace App\Infrastructure\Security\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "`activation_tokens`")]
+#[ORM\Table(name: '`activation_tokens`')]
 class ActivationToken
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\Column(type: "text")]
+    #[ORM\Column(type: 'text')]
     private string $token;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'activationTokens')]
@@ -54,6 +54,6 @@ class ActivationToken
     {
         return (new self())
             ->setUser($user)
-            ->setToken("bla");
+            ->setToken('bla');
     }
 }

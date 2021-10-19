@@ -27,34 +27,34 @@ class ChangePasswordTest extends TestCase implements ChangePasswordPresenterInte
         $this->repository = new InMemoryMembersRepository(
             [
                 new Member(
-                    "user@email",
-                    "username",
-                    "password"
-                )
+                    'user@email',
+                    'username',
+                    'password'
+                ),
             ]
         );
         $this->errors = [];
     }
 
-    public function test_it_can_change_the_password_of_a_member()
+    public function testItCanChangeThePasswordOfAMember()
     {
         $request = new ChangePasswordRequest();
-        $request->email = "user@email";
-        $request->password = "newPassword";
+        $request->email = 'user@email';
+        $request->password = 'newPassword';
         $useCase = new ChangePassword($this->repository);
 
         $useCase->execute($request, $this);
 
         $this->assertInstanceOf(Member::class, $this->response->member);
-        $this->assertEquals("user@email", $this->response->member->email());
-        $this->assertEquals("username", $this->response->member->username());
-        $this->assertEquals("newPassword", $this->response->member?->password());
+        $this->assertEquals('user@email', $this->response->member->email());
+        $this->assertEquals('username', $this->response->member->username());
+        $this->assertEquals('newPassword', $this->response->member?->password());
     }
 
-    public function test_it_has_errors_if_no_user_found()
+    public function testItHasErrorsIfNoUserFound()
     {
         $request = new ChangePasswordRequest();
-        $request->email = "not@found";
+        $request->email = 'not@found';
         $useCase = new ChangePassword($this->repository);
 
         $useCase->execute($request, $this);
@@ -69,6 +69,6 @@ class ChangePasswordTest extends TestCase implements ChangePasswordPresenterInte
 
     public function handleUserNotFound(): void
     {
-        $this->errors[] = "User not found";
+        $this->errors[] = 'User not found';
     }
 }

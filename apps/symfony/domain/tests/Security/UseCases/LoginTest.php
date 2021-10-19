@@ -28,18 +28,18 @@ class LoginTest extends TestCase implements LoginPresenterInterface
         $this->repository = new InMemoryMembersRepository(
             [
                 new Member(
-                    "user@email",
-                    "username",
-                    "password"
-                )
+                    'user@email',
+                    'username',
+                    'password'
+                ),
             ]
         );
         $this->auth = new AuthAdapter();
     }
 
-    public function test_the_response_has_a_member_if_correct_credentials_provided()
+    public function testTheResponseHasAMemberIfCorrectCredentialsProvided()
     {
-        $request = new LoginRequest("user@email", "password");
+        $request = new LoginRequest('user@email', 'password');
 
         $login = new Login($this->repository, $this->auth);
         $login->execute($request, $this);
@@ -48,26 +48,26 @@ class LoginTest extends TestCase implements LoginPresenterInterface
         $this->assertInstanceOf(Member::class, $this->response->getMember());
     }
 
-    public function test_the_response_has_a_wrong_credentials_errors_if_wrong_credentials_are_provided()
+    public function testTheResponseHasAWrongCredentialsErrorsIfWrongCredentialsAreProvided()
     {
-        $request = new LoginRequest("user@email", "wrong");
+        $request = new LoginRequest('user@email', 'wrong');
 
         $login = new Login($this->repository, $this->auth);
         $login->execute($request, $this);
 
         $this->assertNotEmpty($this->response->getErrors());
-        $this->assertContains("WrongCredentials", $this->response->getErrors());
+        $this->assertContains('WrongCredentials', $this->response->getErrors());
     }
 
-    public function test_the_response_has_a_user_not_found_error_if_no_user_matches_the_provided_email()
+    public function testTheResponseHasAUserNotFoundErrorIfNoUserMatchesTheProvidedEmail()
     {
-        $request = new LoginRequest("nouserfound@email", "password");
+        $request = new LoginRequest('nouserfound@email', 'password');
 
         $login = new Login($this->repository, $this->auth);
         $login->execute($request, $this);
 
         $this->assertNotEmpty($this->response->getErrors());
-        $this->assertContains("UserNotFound", $this->response->getErrors());
+        $this->assertContains('UserNotFound', $this->response->getErrors());
     }
 
     public function presents(LoginResponse $response): void

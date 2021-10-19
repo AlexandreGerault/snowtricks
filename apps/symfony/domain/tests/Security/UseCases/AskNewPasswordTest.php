@@ -30,32 +30,32 @@ class AskNewPasswordTest extends TestCase implements AskNewPasswordPresenterInte
         $this->repository = new InMemoryMembersRepository(
             [
                 new Member(
-                    "user@email",
-                    "username",
-                    "password"
-                )
+                    'user@email',
+                    'username',
+                    'password'
+                ),
             ]
         );
         $this->errors = [];
         $this->notifier = new InMemoryNotifierAdapter();
     }
 
-    public function test_it_creates_a_notification_when_user_ask_a_new_password()
+    public function testItCreatesANotificationWhenUserAskANewPassword()
     {
         $useCase = new AskNewPassword($this->repository, $this->notifier);
 
-        $request = new AskNewPasswordRequest("user@email");
+        $request = new AskNewPasswordRequest('user@email');
         $useCase->execute($request, $this);
 
         $this->assertInstanceOf(Member::class, $this->response->member);
         $this->assertCount(1, $this->notifier->notifications);
     }
 
-    public function test_it_creates_an_error_if_user_is_not_found()
+    public function testItCreatesAnErrorIfUserIsNotFound()
     {
         $useCase = new AskNewPassword($this->repository, $this->notifier);
 
-        $request = new AskNewPasswordRequest("not-found@email");
+        $request = new AskNewPasswordRequest('not-found@email');
         $useCase->execute($request, $this);
 
         $this->assertCount(1, $this->errors);
@@ -68,6 +68,6 @@ class AskNewPasswordTest extends TestCase implements AskNewPasswordPresenterInte
 
     public function handleUserNotFound(): void
     {
-        $this->errors[] = "User not found";
+        $this->errors[] = 'User not found';
     }
 }

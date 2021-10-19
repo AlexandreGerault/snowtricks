@@ -6,6 +6,6 @@ namespace Domain\Security\UseCases\ChangePassword;
 
 class ChangePasswordRequest
 {
-    public string $email = "";
-    public string $password = "";
+    public string $email = '';
+    public string $password = '';
 }

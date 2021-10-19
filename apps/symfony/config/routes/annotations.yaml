@@ -3,7 +3,7 @@ security_controllers:
     type: annotation
 
 tricks_controllers:
-    resource: ../../src/UserInterface/Tricks/Controller/
+    resource: ../../src/UserInterface/Trick/Controller/
     type: annotation
 
 kernel:

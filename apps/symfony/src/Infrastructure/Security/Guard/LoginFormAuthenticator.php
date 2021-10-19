@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security\Guard;
 
-use App\Infrastructure\Security\Contracts\Repository\MembersRepositoryInterface;
 use App\UserInterface\Security\ViewModels\HtmlLoginViewModel;
-use Domain\Security\Entity\Member;
-use Domain\Security\Providers\AuthProviderInterface;
 use Domain\Security\UseCases\Login\Login;
 use Domain\Security\UseCases\Login\LoginPresenterInterface;
 use Domain\Security\UseCases\Login\LoginRequest;
@@ -15,8 +12,6 @@ use Domain\Security\UseCases\Login\LoginResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -93,11 +88,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
         $errors = $response->getErrors();
 
         if (in_array('UserNotFound', $errors)) {
-            $this->viewModel->errors[] = "Aucun utilisateur trouvé.";
+            $this->viewModel->errors[] = 'Aucun utilisateur trouvé.';
         }
 
         if (in_array('WrongCredentials', $errors)) {
-            $this->viewModel->errors[] = "Les informations de connexions ne correspondent pas.";
+            $this->viewModel->errors[] = 'Les informations de connexions ne correspondent pas.';
         }
     }
 }

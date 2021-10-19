@@ -19,6 +19,6 @@ doctrine:
             App\Tricks:
                 is_bundle: false
                 type: attribute
-                dir: '%kernel.project_dir%/src/Infrastructure/Tricks/Entity'
-                prefix: 'App\Infrastructure\Tricks\Entity'
+                dir: '%kernel.project_dir%/src/Infrastructure/Trick/Entity'
+                prefix: 'App\Infrastructure\Trick\Entity'
                 alias: App

@@ -24,16 +24,16 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Adresse mail',
                 'required' => true,
-                'constraints' => [new NotBlank(), new Length(['min' => 1]), new Email()]
+                'constraints' => [new NotBlank(), new Length(['min' => 1]), new Email()],
             ])
             ->add('username', TextType::class, [
                 'label' => "Nom d'utilisateur",
                 'required' => true,
-                'constraints' => [new NotBlank(), new Length(['min' => 1])]
+                'constraints' => [new NotBlank(), new Length(['min' => 1])],
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => "Les mots de passes ne correspondent pas",
+                'invalid_message' => 'Les mots de passes ne correspondent pas',
                 'required' => true,
                 'constraints' => [new NotBlank(), new Length(['min' => 6])],
                 'first_options' => ['label' => 'Mot de passe'],

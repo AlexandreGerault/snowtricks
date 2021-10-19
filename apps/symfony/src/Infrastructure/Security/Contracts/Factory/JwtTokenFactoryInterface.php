@@ -11,5 +11,6 @@ use App\Infrastructure\Security\Entity\User;
 interface JwtTokenFactoryInterface
 {
     public function createActivationTokenForUser(User $user): ActivationToken;
+
     public function createNewPasswordTokenForUser(User $user): AskNewPasswordToken;
 }

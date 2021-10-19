@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormView;
 
 class HtmlRegisterViewModel
 {
-    public string $redirect = "";
+    public string $redirect = '';
 
     public ?FormView $form;
 

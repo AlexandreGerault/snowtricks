@@ -13,7 +13,7 @@ class InMemoryMembersRepository implements MembersGateway
     protected array $members = [];
 
     /**
-     * @param  Member[]  $members
+     * @param Member[] $members
      */
     public function __construct(array $members = [])
     {
@@ -29,12 +29,12 @@ class InMemoryMembersRepository implements MembersGateway
 
     public function checkEmailIsFree(string $email): bool
     {
-        return ! array_key_exists($email, $this->members);
+        return !array_key_exists($email, $this->members);
     }
 
     public function checkUsernameIsFree(string $username): bool
     {
-        return count(array_filter($this->members, fn (Member $member) => $member->username() === $username)) === 0;
+        return 0 === count(array_filter($this->members, fn (Member $member) => $member->username() === $username));
     }
 
     public function register(Member $member): void

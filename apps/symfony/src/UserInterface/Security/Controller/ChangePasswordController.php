@@ -32,8 +32,9 @@ class ChangePasswordController extends AbstractController implements ChangePassw
         $form = $this->createForm(ChangePasswordFormType::class, $changePasswordRequest);
         $this->vm->form = $form->createView();
 
-        if (! $request->get('token')) {
+        if (!$request->get('token')) {
             $this->vm->errors[] = "Aucun jeton valide dans l'url";
+
             return $this->render('security/change_password.html.twig', ['vm' => $this->vm]);
         }
 
@@ -61,6 +62,6 @@ class ChangePasswordController extends AbstractController implements ChangePassw
 
     public function handleUserNotFound(): void
     {
-        $this->vm->errors[] = "Aucun utilisateur correspondant";
+        $this->vm->errors[] = 'Aucun utilisateur correspondant';
     }
 }

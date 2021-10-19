@@ -21,7 +21,7 @@ class AskNewPasswordController extends AbstractController implements AskNewPassw
     {
     }
 
-    #[Route("/nouveau-mot-de-passe", name: "app_ask_new_password")]
+    #[Route('/nouveau-mot-de-passe', name: 'app_ask_new_password')]
     public function __invoke(Request $request, AskNewPassword $useCase): Response
     {
         $askNewPasswordRequest = new AskNewPasswordRequest();
@@ -49,6 +49,6 @@ class AskNewPasswordController extends AbstractController implements AskNewPassw
 
     public function handleUserNotFound(): void
     {
-        $this->vm->errors[] = "Cette adresse mail ne correspond à aucun utilisateur connu";
+        $this->vm->errors[] = 'Cette adresse mail ne correspond à aucun utilisateur connu';
     }
 }

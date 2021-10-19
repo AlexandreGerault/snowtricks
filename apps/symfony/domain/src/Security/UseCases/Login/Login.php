@@ -14,7 +14,7 @@ class Login
     {
     }
 
-    public function execute(LoginRequest $request, LoginPresenterInterface $presenter)
+    public function execute(LoginRequest $request, LoginPresenterInterface $presenter): void
     {
         $email = $request->getEmail();
         $password = $request->getPassword();
@@ -29,8 +29,7 @@ class Login
             return;
         }
 
-
-        if (! $this->auth->check($member, $password)) {
+        if (!$this->auth->check($member, $password)) {
             $response = new LoginResponse();
             $response->addError('WrongCredentials');
             $presenter->presents($response);

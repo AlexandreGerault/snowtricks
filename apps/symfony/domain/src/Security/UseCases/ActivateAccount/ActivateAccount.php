@@ -13,7 +13,7 @@ class ActivateAccount
     {
     }
 
-    public function execute(ActivateAccountRequest $request, ActivateAccountPresenterInterface $presenter)
+    public function execute(ActivateAccountRequest $request, ActivateAccountPresenterInterface $presenter): void
     {
         try {
             $member = $this->gateway->getMemberByEmail($request->email);

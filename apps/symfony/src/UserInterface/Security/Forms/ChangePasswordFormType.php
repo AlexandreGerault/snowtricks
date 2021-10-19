@@ -20,7 +20,7 @@ class ChangePasswordFormType extends AbstractType
         $builder
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => "Les mots de passes ne correspondent pas",
+                'invalid_message' => 'Les mots de passes ne correspondent pas',
                 'required' => true,
                 'constraints' => [new NotBlank(), new Length(['min' => 6])],
                 'first_options' => ['label' => 'Mot de passe'],

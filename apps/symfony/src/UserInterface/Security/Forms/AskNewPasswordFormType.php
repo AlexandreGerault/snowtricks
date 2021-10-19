@@ -21,7 +21,7 @@ class AskNewPasswordFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Adresse mail',
                 'required' => true,
-                'constraints' => [new NotBlank(), new Length(['min' => 1]), new Email()]
+                'constraints' => [new NotBlank(), new Length(['min' => 1]), new Email()],
             ]);
     }
 

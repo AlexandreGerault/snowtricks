@@ -10,10 +10,7 @@ use Domain\Security\Exceptions\UserNotFoundException;
 interface MembersGateway
 {
     /**
-     * @param  string  $email
      * @throws UserNotFoundException
-     *
-     * @return Member
      */
     public function getMemberByEmail(string $email): Member;
 

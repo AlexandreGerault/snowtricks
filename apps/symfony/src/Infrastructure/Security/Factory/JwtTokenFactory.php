@@ -34,7 +34,7 @@ class JwtTokenFactory implements JwtTokenFactoryInterface
             ->builder()
             ->issuedAt($now)
             ->expiresAt($now->modify('+1 day'))
-            ->withClaim("uid", $userId)
+            ->withClaim('uid', $userId)
             ->getToken($this->configuration->signer(), $this->configuration->signingKey());
 
         return $token->toString();

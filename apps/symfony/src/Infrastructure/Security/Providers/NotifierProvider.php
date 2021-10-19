@@ -39,7 +39,7 @@ class NotifierProvider implements NotificationProviderInterface
 
         $this->mailer->send(
             (new Email())
-                ->from("no-reply@snowtricks")
+                ->from('no-reply@snowtricks')
                 ->to($member->email())
                 ->text($this->getRegistrationText($token->getToken()))
         );
@@ -76,7 +76,7 @@ class NotifierProvider implements NotificationProviderInterface
 
         $this->mailer->send(
             (new Email())
-                ->from("no-reply@snowtricks")
+                ->from('no-reply@snowtricks')
                 ->to($member->email())
                 ->text($this->getNewPasswordText($token->getToken()))
         );
