@@ -31,9 +31,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private string $password;
 
+    /** @var Collection<ActivationToken> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ActivationToken::class)]
     private Collection $activationTokens;
 
+    /** @var Collection<AskNewPasswordToken> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AskNewPasswordToken::class)]
     private Collection $askNewPasswordTokens;
 
@@ -122,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -140,18 +142,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<ActivationToken>
+     */
     public function getActivationTokens(): Collection
     {
         return $this->activationTokens;
     }
 
+    /**
+     * @return Collection<AskNewPasswordToken>
+     */
     public function getNewPasswordTokens(): Collection
     {
         return $this->askNewPasswordTokens;
     }
 
-    public function setActive(bool $isActive)
+    public function setActive(bool $isActive): self
     {
         $this->active = $isActive;
+
+        return $this;
     }
 }
