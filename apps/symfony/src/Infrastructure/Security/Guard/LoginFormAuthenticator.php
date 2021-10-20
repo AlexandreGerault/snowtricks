@@ -9,6 +9,7 @@ use Domain\Security\UseCases\Login\Login;
 use Domain\Security\UseCases\Login\LoginPresenterInterface;
 use Domain\Security\UseCases\Login\LoginRequest;
 use Domain\Security\UseCases\Login\LoginResponse;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +44,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
     {
         $email = $request->request->get('email', '');
         $password = $request->request->get('password', '');
+
+        if (!is_string($email) || !is_string($password)) {
+            throw new InvalidArgumentException('Request cannot allow authentication');
+        }
 
         $loginRequest = new LoginRequest($email, $password);
         $this->login->execute($loginRequest, $this);

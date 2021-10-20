@@ -36,7 +36,7 @@ class ListTricksTest extends TestCase implements ListTricksPresenterInterface
         $this->useCase = new ListTricks($repository);
     }
 
-    public function testTheResponseHasAListOfAllTricks()
+    public function testTheResponseHasAListOfAllTricks(): void
     {
         $request = new ListTricksRequest();
         $request->quantity = 2;

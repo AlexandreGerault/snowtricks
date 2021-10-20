@@ -18,7 +18,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class RegisterNewTrickControllerTest extends TestCase
 {
-    public function test_it_redirects_a_user_that_is_not_logged_in_to_the_login_page()
+    public function testItRedirectsAUserThatIsNotLoggedInToTheLoginPage(): void
     {
         $controller = $this->getController();
 
@@ -28,7 +28,7 @@ class RegisterNewTrickControllerTest extends TestCase
         $this->assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
-    public function test_it_shows_a_user_the_form()
+    public function testItShowsAUserTheForm()
     {
         $controller = $this->getController(true);
 

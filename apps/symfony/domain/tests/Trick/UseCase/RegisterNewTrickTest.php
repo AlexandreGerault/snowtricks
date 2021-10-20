@@ -54,7 +54,7 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         $this->useCase->executes($request, $this);
 
         $this->assertInstanceOf(Trick::class, $this->response->trick);
-        $this->assertEquals('MyTrick', $this->response->trick->getName());
+        $this->assertEquals('MyTrick', $this->response->trick?->getName());
         $this->assertEquals('MyTrick', $this->tricksGateway->getTrickByName('MyTrick')->getName());
     }
 
@@ -85,7 +85,7 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         string $category,
         array $illustrations,
         File $thumbnail
-    ) {
+    ): void {
         $this->expectException(InvalidArgumentException::class);
         $request = new RegisterNewTrickRequest(
             thumbnail: $thumbnail,

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Tests\Security\UseCases;
 
 use Domain\Security\Entity\Member;
-use Domain\Security\Providers\NotificationProviderInterface;
 use Domain\Security\UseCases\Register\Register;
 use Domain\Security\UseCases\Register\RegisterPresenterInterface;
 use Domain\Security\UseCases\Register\RegisterRequest;
@@ -19,7 +18,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
     private array $errors;
     private RegisterResponse $response;
     private Register $register;
-    private NotificationProviderInterface $notifier;
+    private InMemoryNotifierAdapter $notifier;
 
     public const EMAIL_ALREADY_USED = 'Cette adresse email est déjà utilisée.';
     public const USERNAME_ALREADY_USED = "Ce nom d'utilisateur est déjà pris.";
@@ -43,7 +42,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
         $this->register = new Register($repository, $this->notifier);
     }
 
-    public function testItCanRegisterAMember()
+    public function testItCanRegisterAMember(): void
     {
         $request = new RegisterRequest('Username', 'email@email', 'password');
 
@@ -54,7 +53,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
         $this->assertCount(1, $this->notifier->notifications);
     }
 
-    public function testItCannotRegisterAUserWithAnEmailThatIsAlreadyRegistered()
+    public function testItCannotRegisterAUserWithAnEmailThatIsAlreadyRegistered(): void
     {
         $request = new RegisterRequest('Username', 'user@email', 'password');
 
@@ -64,7 +63,7 @@ class RegisterTest extends TestCase implements RegisterPresenterInterface
         $this->assertContains(self::EMAIL_ALREADY_USED, $this->errors);
     }
 
-    public function testItCannotRegisterAUserWithAUsernameThatIsAlreadyRegistered()
+    public function testItCannotRegisterAUserWithAUsernameThatIsAlreadyRegistered(): void
     {
         $request = new RegisterRequest('username', 'email@email', 'password');
 

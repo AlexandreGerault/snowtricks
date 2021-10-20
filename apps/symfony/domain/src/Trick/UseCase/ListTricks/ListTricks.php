@@ -12,7 +12,7 @@ class ListTricks
     {
     }
 
-    public function execute(ListTricksRequest $request, ListTricksPresenterInterface $presenter)
+    public function execute(ListTricksRequest $request, ListTricksPresenterInterface $presenter): void
     {
         $tricks = $this->tricksGateway->getLastTricksOverviews($request->quantity);
 

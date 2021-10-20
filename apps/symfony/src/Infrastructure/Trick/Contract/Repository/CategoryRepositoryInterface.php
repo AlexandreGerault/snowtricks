@@ -9,6 +9,7 @@ use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @method Category[] findAll()
+ * @extends ObjectRepository<Category>
  */
 interface CategoryRepositoryInterface extends ObjectRepository
 {

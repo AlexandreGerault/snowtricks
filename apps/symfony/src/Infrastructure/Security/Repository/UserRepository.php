@@ -23,6 +23,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @extends  ServiceEntityRepository<User>
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, MembersRepositoryInterface
 {
@@ -49,14 +50,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * @throws NonUniqueResultException
+     * @throws UserNotFoundException
      */
-    public function getUserByEmail(string $email): ?User
+    public function getUserByEmail(string $email): User
     {
         return $this->createQueryBuilder('m')
                     ->where('m.email = :email')
                     ->setParameter('email', $email)
                     ->getQuery()
-                    ->getOneOrNullResult();
+                    ->getOneOrNullResult() ?? throw new UserNotFoundException();
     }
 
     /**
@@ -67,8 +69,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $user = $this->getUserByEmail($email);
 
-        if (!$user) {
-            throw new UserNotFoundException();
+        if (!is_string($user->getEmail())
+            || !is_string($user->getUsername())
+            || !is_string($user->getPassword())
+        ) {
+            throw new \InvalidArgumentException('Cannot create member from user');
         }
 
         return new Member($user->getEmail(), $user->getUsername(), $user->getPassword());

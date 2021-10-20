@@ -40,7 +40,7 @@ class RegisterNewTrickController extends AbstractController implements RegisterN
     #[Route(path: '/figures/ajouter', name: 'ajouter-une-nouvelle-figure')]
     public function __invoke(Request $request): RedirectResponse|Response
     {
-        if (! $this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if (!$this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
         }
 

@@ -13,23 +13,23 @@ class DummyUrlGenerator implements UrlGeneratorInterface
     {
     }
 
-    public function addRoute(string $name, string $path)
+    public function addRoute(string $name, string $path): void
     {
         $this->routes[$name] = $path;
     }
 
-    public function setContext(RequestContext $context)
+    public function setContext(RequestContext $context): void
     {
         // TODO: Implement setContext() method.
     }
 
-    public function getContext()
+    public function getContext(): RequestContext
     {
-        // TODO: Implement getContext() method.
+        return new RequestContext();
     }
 
     public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH)
     {
-        return $this->routes['name'] ?? throw new \RuntimeException("Route not found");
+        return $this->routes['name'] ?? throw new \RuntimeException('Route not found');
     }
 }

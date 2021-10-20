@@ -37,7 +37,7 @@ class LoginTest extends TestCase implements LoginPresenterInterface
         $this->auth = new AuthAdapter();
     }
 
-    public function testTheResponseHasAMemberIfCorrectCredentialsProvided()
+    public function testTheResponseHasAMemberIfCorrectCredentialsProvided(): void
     {
         $request = new LoginRequest('user@email', 'password');
 
@@ -48,7 +48,7 @@ class LoginTest extends TestCase implements LoginPresenterInterface
         $this->assertInstanceOf(Member::class, $this->response->getMember());
     }
 
-    public function testTheResponseHasAWrongCredentialsErrorsIfWrongCredentialsAreProvided()
+    public function testTheResponseHasAWrongCredentialsErrorsIfWrongCredentialsAreProvided(): void
     {
         $request = new LoginRequest('user@email', 'wrong');
 
@@ -59,7 +59,7 @@ class LoginTest extends TestCase implements LoginPresenterInterface
         $this->assertContains('WrongCredentials', $this->response->getErrors());
     }
 
-    public function testTheResponseHasAUserNotFoundErrorIfNoUserMatchesTheProvidedEmail()
+    public function testTheResponseHasAUserNotFoundErrorIfNoUserMatchesTheProvidedEmail(): void
     {
         $request = new LoginRequest('nouserfound@email', 'password');
 

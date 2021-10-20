@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\Trick\UseCase\ListTricks;
 
-use Domain\Trick\Entity\Trick;
+use Domain\Trick\Entity\TrickOverview;
 
 class ListTricksResponse
 {
     /**
-     * @var Trick[]
+     * @var TrickOverview[]
      */
     public array $tricks;
 }
