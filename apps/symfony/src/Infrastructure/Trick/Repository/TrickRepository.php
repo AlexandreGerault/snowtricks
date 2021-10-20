@@ -15,6 +15,9 @@ use Domain\Trick\Entity\Trick as DomainTrick;
 use Domain\Trick\Entity\TrickOverview;
 use Domain\Trick\Gateway\TrickGateway;
 
+/**
+ * @extends ServiceEntityRepository<Trick>
+ */
 class TrickRepository extends ServiceEntityRepository implements TrickGateway
 {
     public function __construct(ManagerRegistry $registry, private CategoryRepositoryInterface $categoryRepository)
@@ -77,7 +80,10 @@ class TrickRepository extends ServiceEntityRepository implements TrickGateway
 
         $trickEntity->setName($trick->getName());
         $trickEntity->setDescription($trick->getDescription());
-        $trickEntity->setCategory($this->categoryRepository->findOneBy(['name' => $trick->getCategory()]));
+        $trickEntity->setCategory(
+            $this->categoryRepository->findOneBy(['name' => $trick->getCategory()])
+            ?? throw new \RuntimeException('The category is invalid')
+        );
 
         $thumbnail = (new Illustration())->setTrick($trickEntity)->setPath($trick->getThumbnailUrl());
         $this->_em->persist($thumbnail);

@@ -23,10 +23,10 @@ class RegisterNewTrickTest extends WebTestCase
         parent::setUp();
 
         $this->client = static::createClient();
-        $this->databaseTool = $this->getContainer()->get(DatabaseToolCollection::class)->get();
+        $this->databaseTool = $this->getContainer()->get(DatabaseToolCollection::class)?->get();
     }
 
-    public function test_it_redirects_unauthenticated_users_to_login_form(): void
+    public function testItRedirectsUnauthenticatedUsersToLoginForm(): void
     {
         $this->databaseTool->loadFixtures([ListTricksFixture::class]);
         $this->client->request('GET', '/figures/ajouter');
@@ -34,10 +34,10 @@ class RegisterNewTrickTest extends WebTestCase
         $this->assertResponseRedirects('/login');
     }
 
-    public function test_it_shows_a_form_to_an_authenticated_user(): void
+    public function testItShowsAFormToAnAuthenticatedUser(): void
     {
         $this->databaseTool->loadFixtures([LoadUserFixture::class]);
-        $user = $this->getContainer()->get(MembersGateway::class)->findOneBy(['username' => 'user']);
+        $user = $this->getContainer()->get(MembersGateway::class)?->findOneBy(['username' => 'user']);
         $this->client->loginUser($user);
 
         $this->client->request('GET', '/figures/ajouter');

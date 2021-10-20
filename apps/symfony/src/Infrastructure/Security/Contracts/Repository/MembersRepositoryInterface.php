@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 interface MembersRepositoryInterface extends MembersGateway
 {
-    public function getUserByEmail(string $email): ?User;
+    public function getUserByEmail(string $email): User;
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void;
 }

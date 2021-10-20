@@ -31,11 +31,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private string $password;
 
-    /** @var Collection<ActivationToken> */
+    /** @var Collection<int, ActivationToken> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ActivationToken::class)]
     private Collection $activationTokens;
 
-    /** @var Collection<AskNewPasswordToken> */
+    /** @var Collection<int, AskNewPasswordToken> */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: AskNewPasswordToken::class)]
     private Collection $askNewPasswordTokens;
 
@@ -143,7 +143,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<ActivationToken>
+     * @return Collection<int, ActivationToken>
      */
     public function getActivationTokens(): Collection
     {
@@ -151,7 +151,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<AskNewPasswordToken>
+     * @return Collection<int, AskNewPasswordToken>
      */
     public function getNewPasswordTokens(): Collection
     {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\Tests\Security\UseCases;
 
 use Domain\Security\Entity\Member;
-use Domain\Security\Providers\NotificationProviderInterface;
 use Domain\Security\UseCases\Register\Register;
 use Domain\Security\UseCases\Register\RegisterPresenterInterface;
 use Domain\Security\UseCases\Register\RegisterRequest;

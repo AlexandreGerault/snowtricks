@@ -12,7 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class ListTricksFixture extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $category = (new Category())->setName('Catégorie');
         $manager->persist($category);

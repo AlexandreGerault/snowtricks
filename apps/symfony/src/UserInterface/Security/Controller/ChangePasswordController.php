@@ -11,6 +11,7 @@ use Domain\Security\UseCases\ChangePassword\ChangePasswordPresenterInterface;
 use Domain\Security\UseCases\ChangePassword\ChangePasswordRequest;
 use Domain\Security\UseCases\ChangePassword\ChangePasswordResponse;
 use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\UnencryptedToken;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,10 @@ class ChangePasswordController extends AbstractController implements ChangePassw
             return $this->render('security/change_password.html.twig', ['vm' => $this->vm]);
         }
 
+        assert(is_string($request->query->get('token')));
         $token = $this->jwtConfiguration->parser()->parse($request->query->get('token'));
+        assert($token instanceof UnencryptedToken);
+
         $email = $token->claims()->get('uid');
         $changePasswordRequest->email = $email;
 

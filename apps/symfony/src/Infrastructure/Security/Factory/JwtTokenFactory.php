@@ -18,9 +18,21 @@ class JwtTokenFactory implements JwtTokenFactoryInterface
     public function createActivationTokenForUser(User $user): ActivationToken
     {
         $token = new ActivationToken();
+        $userId = $user->getEmail() ?? throw new \InvalidArgumentException('User does not have a valid email address');
 
         $token->setUser($user);
-        $token->setToken($this->generateToken($user->getEmail()));
+        $token->setToken($this->generateToken($userId));
+
+        return $token;
+    }
+
+    public function createNewPasswordTokenForUser(User $user): AskNewPasswordToken
+    {
+        $token = new AskNewPasswordToken();
+        $userId = $user->getEmail() ?? throw new \InvalidArgumentException('User does not have a valid email address');
+
+        $token->setUser($user);
+        $token->setToken($this->generateToken($userId));
 
         return $token;
     }
@@ -38,15 +50,5 @@ class JwtTokenFactory implements JwtTokenFactoryInterface
             ->getToken($this->configuration->signer(), $this->configuration->signingKey());
 
         return $token->toString();
-    }
-
-    public function createNewPasswordTokenForUser(User $user): AskNewPasswordToken
-    {
-        $token = new AskNewPasswordToken();
-
-        $token->setUser($user);
-        $token->setToken($this->generateToken($user->getEmail()));
-
-        return $token;
     }
 }

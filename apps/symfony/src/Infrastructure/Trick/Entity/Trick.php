@@ -27,9 +27,11 @@ class Trick
     #[ORM\ManyToOne(targetEntity: Category::class)]
     private Category $category;
 
+    /** @var Collection<int, Illustration> */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Illustration::class)]
     private Collection $illustrations;
 
+    /** @var Collection<int, Video> */
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class)]
     private Collection $videos;
 
@@ -84,6 +86,9 @@ class Trick
         $this->category = $category;
     }
 
+    /**
+     * @return Collection<int, Illustration>
+     */
     public function getIllustrations(): Collection
     {
         return $this->illustrations;
@@ -96,6 +101,9 @@ class Trick
         return $this;
     }
 
+    /**
+     * @return Collection<int, Video>
+     */
     public function getVideoLinks(): Collection
     {
         return $this->videos;
