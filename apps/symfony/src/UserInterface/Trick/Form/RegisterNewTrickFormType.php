@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UserInterface\Trick\Form;
 
 use App\Infrastructure\Trick\Entity\Category;
-use App\UserInterface\Tricks\DTO\RegisterNewTrickFormModel;
+use App\UserInterface\Trick\DTO\RegisterNewTrickFormModel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;

@@ -45,12 +45,21 @@
                                             class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-5 current_page_item menu-item-9">
                                             <a href="{{ path('app_home') }}"
                                                aria-current="page">Accueil</a></li>
+                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                         <li id="menu-item-10"
                                             class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10">
                                             <a href="{{ path('ajouter-une-nouvelle-figure') }}">
                                                 Ajouter
                                             </a>
                                         </li>
+                                        {% else %}
+                                            <li id="menu-item-10"
+                                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-10">
+                                                <a href="{{ path('app_login') }}">
+                                                    Connexion
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                             </div>
@@ -87,7 +96,7 @@
             </h1>
             <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
                 <span class="block text-white max-w-3xl text-center">
-                    L'annuaire en ligne des figures de snowboard par des passionnés pour des passionés
+                    L'annuaire en ligne des figures de snowboard par des passionnés pour des passionnés
                 </span>
             </h2>
         </div>

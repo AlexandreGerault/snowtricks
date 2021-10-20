@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class RegisterNewTrickController extends AbstractController implements RegisterNewTrickPresenterInterface
@@ -29,13 +31,19 @@ class RegisterNewTrickController extends AbstractController implements RegisterN
     public function __construct(
         private HtmlRegisterNewTrickViewModel $vm,
         private RegisterNewTrick $useCase,
-        private SluggerInterface $slugger
+        private SluggerInterface $slugger,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private UrlGeneratorInterface $urlGenerator
     ) {
     }
 
     #[Route(path: '/figures/ajouter', name: 'ajouter-une-nouvelle-figure')]
     public function __invoke(Request $request): RedirectResponse|Response
     {
+        if (! $this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        }
+
         $registerNewTrickFormRequest = new RegisterNewTrickFormModel();
 
         $form = $this->createForm(RegisterNewTrickFormType::class, $registerNewTrickFormRequest);
