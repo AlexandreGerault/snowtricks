@@ -6,7 +6,6 @@ namespace Domain\Tests\Security\UseCases;
 
 use Domain\Security\Entity\Member;
 use Domain\Security\Gateway\MembersGateway;
-use Domain\Security\Providers\NotificationProviderInterface;
 use Domain\Security\UseCases\AskNewPassword\AskNewPassword;
 use Domain\Security\UseCases\AskNewPassword\AskNewPasswordPresenterInterface;
 use Domain\Security\UseCases\AskNewPassword\AskNewPasswordRequest;
@@ -18,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class AskNewPasswordTest extends TestCase implements AskNewPasswordPresenterInterface
 {
     private AskNewPasswordResponse $response;
-    private NotificationProviderInterface $notifier;
+    private InMemoryNotifierAdapter $notifier;
     private MembersGateway $repository;
 
     private array $errors;
@@ -40,7 +39,7 @@ class AskNewPasswordTest extends TestCase implements AskNewPasswordPresenterInte
         $this->notifier = new InMemoryNotifierAdapter();
     }
 
-    public function testItCreatesANotificationWhenUserAskANewPassword()
+    public function testItCreatesANotificationWhenUserAskANewPassword(): void
     {
         $useCase = new AskNewPassword($this->repository, $this->notifier);
 
@@ -51,7 +50,7 @@ class AskNewPasswordTest extends TestCase implements AskNewPasswordPresenterInte
         $this->assertCount(1, $this->notifier->notifications);
     }
 
-    public function testItCreatesAnErrorIfUserIsNotFound()
+    public function testItCreatesAnErrorIfUserIsNotFound(): void
     {
         $useCase = new AskNewPassword($this->repository, $this->notifier);
 

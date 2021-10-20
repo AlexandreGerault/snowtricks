@@ -36,7 +36,7 @@ class ChangePasswordTest extends TestCase implements ChangePasswordPresenterInte
         $this->errors = [];
     }
 
-    public function testItCanChangeThePasswordOfAMember()
+    public function testItCanChangeThePasswordOfAMember(): void
     {
         $request = new ChangePasswordRequest();
         $request->email = 'user@email';
@@ -46,12 +46,12 @@ class ChangePasswordTest extends TestCase implements ChangePasswordPresenterInte
         $useCase->execute($request, $this);
 
         $this->assertInstanceOf(Member::class, $this->response->member);
-        $this->assertEquals('user@email', $this->response->member->email());
-        $this->assertEquals('username', $this->response->member->username());
+        $this->assertEquals('user@email', $this->response->member?->email());
+        $this->assertEquals('username', $this->response->member?->username());
         $this->assertEquals('newPassword', $this->response->member?->password());
     }
 
-    public function testItHasErrorsIfNoUserFound()
+    public function testItHasErrorsIfNoUserFound(): void
     {
         $request = new ChangePasswordRequest();
         $request->email = 'not@found';

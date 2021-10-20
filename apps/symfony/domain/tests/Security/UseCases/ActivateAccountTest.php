@@ -36,7 +36,7 @@ class ActivateAccountTest extends TestCase implements ActivateAccountPresenterIn
         $this->errors = [];
     }
 
-    public function testAUserIsActivated()
+    public function testAUserIsActivated(): void
     {
         $useCase = new ActivateAccount($this->repository);
 
@@ -47,7 +47,7 @@ class ActivateAccountTest extends TestCase implements ActivateAccountPresenterIn
         $this->assertTrue($this->response->member->isActive());
     }
 
-    public function testIfFailsIfEmailDoesNotMatchAUser()
+    public function testIfFailsIfEmailDoesNotMatchAUser(): void
     {
         $useCase = new ActivateAccount($this->repository);
 

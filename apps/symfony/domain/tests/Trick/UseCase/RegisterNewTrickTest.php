@@ -85,7 +85,7 @@ class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenter
         string $category,
         array $illustrations,
         File $thumbnail
-    ) {
+    ): void {
         $this->expectException(InvalidArgumentException::class);
         $request = new RegisterNewTrickRequest(
             thumbnail: $thumbnail,
