@@ -10,13 +10,13 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App\Security:
+            App\Infrastructure\Security:
                 is_bundle: false
                 type: attribute
                 dir: '%kernel.project_dir%/src/Infrastructure/Security/Entity'
                 prefix: 'App\Infrastructure\Security\Entity'
                 alias: App
-            App\Tricks:
+            App\Infrastructure\Tricks:
                 is_bundle: false
                 type: attribute
                 dir: '%kernel.project_dir%/src/Infrastructure/Trick/Entity'

@@ -2,25 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Application\Trick;
+namespace App\Tests\Functionnal\Trick;
 
-use App\Tests\Application\Trick\Fixture\ListTricksFixture;
+use App\Tests\Functionnal\Trick\Fixture\ListTricksFixture;
+use App\Tests\Setup\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class HomepageTestCaseTest extends WebTestCase
 {
     protected AbstractDatabaseTool $databaseTool;
-    protected KernelBrowser $client;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->client = static::createClient();
-        $this->databaseTool = $this->getContainer()->get(DatabaseToolCollection::class)->get();
+        /** @var DatabaseToolCollection $databaseTool */
+        $databaseTool = $this->container()->get(DatabaseToolCollection::class);
+        $this->databaseTool = $databaseTool->get();
     }
 
     public function testHomepageDisplaysTricks(): void

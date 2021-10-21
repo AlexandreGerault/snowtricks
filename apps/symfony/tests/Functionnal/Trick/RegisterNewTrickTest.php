@@ -2,28 +2,29 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Application\Trick;
+namespace App\Tests\Functionnal\Trick;
 
-use App\Tests\Application\Trick\Fixture\ListTricksFixture;
-use App\Tests\Application\Trick\Fixture\LoadUserFixture;
+use App\Infrastructure\Security\Entity\User;
+use App\Infrastructure\Security\Repository\UserRepository;
+use App\Tests\Functionnal\Trick\Fixture\ListTricksFixture;
+use App\Tests\Functionnal\Trick\Fixture\LoadUserFixture;
+use App\Tests\Setup\WebTestCase;
 use Domain\Security\Gateway\MembersGateway;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class RegisterNewTrickTest extends WebTestCase
 {
     protected AbstractDatabaseTool $databaseTool;
-    protected KernelBrowser $client;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->client = static::createClient();
-        $this->databaseTool = $this->getContainer()->get(DatabaseToolCollection::class)?->get();
+        /** @var DatabaseToolCollection $databaseTool */
+        $databaseTool = $this->getContainer()->get(DatabaseToolCollection::class);
+        $this->databaseTool = $databaseTool->get();
     }
 
     public function testItRedirectsUnauthenticatedUsersToLoginForm(): void
@@ -37,7 +38,13 @@ class RegisterNewTrickTest extends WebTestCase
     public function testItShowsAFormToAnAuthenticatedUser(): void
     {
         $this->databaseTool->loadFixtures([LoadUserFixture::class]);
-        $user = $this->getContainer()->get(MembersGateway::class)?->findOneBy(['username' => 'user']);
+
+        /** @var UserRepository $gateway */
+        $gateway = $this->getContainer()->get(MembersGateway::class);
+
+        /** @var User $user */
+        $user = $gateway->findOneBy(['username' => 'user']);
+
         $this->client->loginUser($user);
 
         $this->client->request('GET', '/figures/ajouter');

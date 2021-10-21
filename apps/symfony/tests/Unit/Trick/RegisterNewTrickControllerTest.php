@@ -28,7 +28,7 @@ class RegisterNewTrickControllerTest extends TestCase
         $this->assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
-    public function testItShowsAUserTheForm()
+    public function testItShowsAUserTheForm(): void
     {
         $controller = $this->getController(true);
 
