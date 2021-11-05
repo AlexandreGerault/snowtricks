@@ -9,12 +9,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RegisterFormModel
 {
     #[Assert\NotBlank]
-    public string $username = "";
+    public string $username = '';
 
     #[Assert\NotBlank]
     #[Assert\Email]
-    public string $email = "";
+    public string $email = '';
 
     #[Assert\NotBlank]
-    public string $password = "";
+    public string $password = '';
 }

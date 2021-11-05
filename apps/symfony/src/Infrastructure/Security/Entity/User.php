@@ -42,11 +42,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private bool $active = false;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
@@ -88,13 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -133,29 +121,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isActive(): bool
     {
         return $this->active;
-    }
-
-    public function activate(): self
-    {
-        $this->active = true;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ActivationToken>
-     */
-    public function getActivationTokens(): Collection
-    {
-        return $this->activationTokens;
-    }
-
-    /**
-     * @return Collection<int, AskNewPasswordToken>
-     */
-    public function getNewPasswordTokens(): Collection
-    {
-        return $this->askNewPasswordTokens;
     }
 
     public function setActive(bool $isActive): self

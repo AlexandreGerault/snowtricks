@@ -2,27 +2,43 @@
 
 namespace App\Tests\Setup;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class WebTestCase extends BaseWebTestCase
 {
-    private ContainerInterface $dic;
     protected KernelBrowser $client;
+    protected AbstractDatabaseTool $databaseTool;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->client = static::createClient();
-        $this->dic = $this->client->getContainer();
+
+        /** @var DatabaseToolCollection $databaseTool */
+        $databaseTool = $this->client->getContainer()->get(DatabaseToolCollection::class);
+        $this->databaseTool = $databaseTool->get();
     }
 
-    protected function container(): ContainerInterface
+    public function generateImage(): UploadedFile
     {
-        return $this->dic;
+        $myTempFile = tmpfile();
+        $image = imagecreatetruecolor(1, 1);
+        assert(false !== $image && false !== $myTempFile);
+        imagejpeg($image);
+        $fileContent = ob_get_clean();
+        assert(false !== $fileContent);
+        fwrite($myTempFile, $fileContent);
+
+        return new UploadedFile(
+            path: stream_get_meta_data($myTempFile)['uri'],
+            originalName: 'originalName.jpg',
+            mimeType: 'image/jpeg',
+            test: true
+        );
     }
 }

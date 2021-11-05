@@ -17,32 +17,54 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ActivateAccountController extends AbstractController implements ActivateAccountPresenterInterface
 {
-    public function __construct(private ActivateAccount $activateAccount, private Configuration $jwtConfiguration)
-    {
+    public function __construct(
+        private ActivateAccount $activateAccount,
+        private Configuration $jwtConfiguration,
+        private string $redirectUrl = '',
+        private array $errors = []
+    ) {
     }
 
     #[Route('/confirmation-inscription', name: 'app_registration_confirmation')]
     public function __invoke(Request $request): Response
     {
-        assert(is_string($request->query->get('token')));
-        $token = $this->jwtConfiguration->parser()->parse($request->query->get('token'));
+        $tokenString = (string) $request->query->get('token');
+        if (!$tokenString) {
+            return new Response('No email found in the token', Response::HTTP_BAD_REQUEST);
+        }
+
+        $token = $this->jwtConfiguration->parser()->parse($tokenString);
         assert($token instanceof UnencryptedToken);
 
+        /** @var string $email */
         $email = $token->claims()->get('uid');
-        $activateAccountRequest = new ActivateAccountRequest($email);
+        if (!$email) {
+            return new Response('No email found in the token', Response::HTTP_BAD_REQUEST);
+        }
 
+        $activateAccountRequest = new ActivateAccountRequest($email);
         $this->activateAccount->execute($activateAccountRequest, $this);
 
-        return $this->redirectToRoute('app_home');
+        if ($this->hasErrors()) {
+            $this->addFlash('errors', $this->errors);
+        }
+
+        return $this->redirect($this->redirectUrl);
     }
 
     public function presents(ActivateAccountResponse $response): void
     {
-        // TODO: Implement presents() method.
+        $this->redirectUrl = '/';
     }
 
     public function handleUserNotFound(): void
     {
-        // TODO: Implement handleUserNotFound() method.
+        $this->errors[] = 'Aucun utilisateur ne semble correspondre';
+        $this->redirectUrl = '/';
+    }
+
+    private function hasErrors(): bool
+    {
+        return count($this->errors) > 0;
     }
 }

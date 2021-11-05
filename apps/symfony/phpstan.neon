@@ -3,5 +3,5 @@ parameters:
         - domain
         - src
         - tests
-    level: 8
+    level: 9
     checkMissingIterableValueType: false

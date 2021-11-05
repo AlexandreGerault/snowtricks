@@ -19,9 +19,11 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Infrastructure\Security\Guard\LoginFormAuthenticator
+            custom_authenticator: App\Infrastructure\Security\Authenticators\LoginFormAuthenticator
             logout:
                 path: app_logout
+                csrf_parameter: token
+                csrf_token_generator: security.csrf.token_manager
                 # where to redirect after logout
                 # target: app_any_route
 

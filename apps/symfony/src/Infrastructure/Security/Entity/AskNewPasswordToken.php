@@ -21,11 +21,6 @@ class AskNewPasswordToken
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'askNewPasswordTokens')]
     private User $user;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getToken(): string
     {
         return $this->token;
@@ -38,22 +33,10 @@ class AskNewPasswordToken
         return $this;
     }
 
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
     public function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
-    }
-
-    public static function createForUser(User $user): self
-    {
-        return (new self())
-            ->setUser($user)
-            ->setToken('bla');
     }
 }

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security\Fixtures;
+namespace App\Tests\Functional\Security\Fixture;
 
 use App\Infrastructure\Security\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
+class LoadHashedPasswordUserFixture extends Fixture
 {
     public function __construct(private UserPasswordHasherInterface $hasher)
     {
@@ -18,11 +18,13 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $user = new User();
-        $user->setUsername('Alexandre');
-        $user->setEmail('alexandre@hexium.io');
-        $user->setPassword($this->hasher->hashPassword($user, 'password'));
-        $manager->persist($user);
 
+        $user->setActive(true);
+        $user->setEmail('user@email.fr');
+        $user->setPassword($this->hasher->hashPassword($user, 'password'));
+        $user->setUsername('user');
+
+        $manager->persist($user);
         $manager->flush();
     }
 }

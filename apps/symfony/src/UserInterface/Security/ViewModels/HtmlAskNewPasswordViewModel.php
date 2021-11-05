@@ -8,8 +8,6 @@ use Symfony\Component\Form\FormView;
 
 class HtmlAskNewPasswordViewModel
 {
-    public ?string $redirect = null;
-
     public ?FormView $form;
 
     public array $errors = [];

@@ -21,4 +21,6 @@ interface MembersGateway
     public function register(Member $member): void;
 
     public function updateMember(Member $member): void;
+
+    public function updatePassword(Member $member, string $newPlainPassword): void;
 }

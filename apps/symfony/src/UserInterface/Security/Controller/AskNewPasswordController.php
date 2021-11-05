@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AskNewPasswordController extends AbstractController implements AskNewPasswordPresenterInterface
 {
-    public function __construct(private HtmlAskNewPasswordViewModel $vm)
+    public function __construct(private HtmlAskNewPasswordViewModel $vm, private string $redirectUrl = '')
     {
     }
 
@@ -32,8 +32,8 @@ class AskNewPasswordController extends AbstractController implements AskNewPassw
         if ($form->isSubmitted() && $form->isValid()) {
             $useCase->execute($askNewPasswordRequest, $this);
 
-            if ($this->vm->redirect) {
-                return $this->redirect($this->vm->redirect);
+            if ($this->redirectUrl) {
+                return $this->redirect($this->redirectUrl);
             }
         }
 
@@ -44,7 +44,7 @@ class AskNewPasswordController extends AbstractController implements AskNewPassw
 
     public function presents(AskNewPasswordResponse $response): void
     {
-        $this->vm->redirect = $this->generateUrl('app_home');
+        $this->redirectUrl = $this->generateUrl('app_home');
     }
 
     public function handleUserNotFound(): void

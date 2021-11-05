@@ -46,9 +46,9 @@ class ChangePasswordTest extends TestCase implements ChangePasswordPresenterInte
         $useCase->execute($request, $this);
 
         $this->assertInstanceOf(Member::class, $this->response->member);
-        $this->assertEquals('user@email', $this->response->member?->email());
-        $this->assertEquals('username', $this->response->member?->username());
-        $this->assertEquals('newPassword', $this->response->member?->password());
+        $this->assertEquals('user@email', $this->response->member->email());
+        $this->assertEquals('username', $this->response->member->username());
+        $this->assertEquals('newPassword', $this->response->member->password());
     }
 
     public function testItHasErrorsIfNoUserFound(): void
