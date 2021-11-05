@@ -21,21 +21,11 @@ class Video
     #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: 'videos')]
     private Trick $trick;
 
-    public function getLink(): string
-    {
-        return $this->link;
-    }
-
     public function setLink(string $link): self
     {
         $this->link = $link;
 
         return $this;
-    }
-
-    public function getTrick(): Trick
-    {
-        return $this->trick;
     }
 
     public function setTrick(Trick $trick): self

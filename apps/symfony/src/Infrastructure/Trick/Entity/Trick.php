@@ -56,21 +56,6 @@ class Trick
         return $this;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
     public function setDescription(string $description): void
     {
         $this->description = $description;
@@ -86,27 +71,11 @@ class Trick
         $this->category = $category;
     }
 
-    /**
-     * @return Collection<int, Illustration>
-     */
-    public function getIllustrations(): Collection
-    {
-        return $this->illustrations;
-    }
-
     public function addIllustration(Illustration $illustrations): self
     {
         $this->illustrations->add($illustrations);
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Video>
-     */
-    public function getVideoLinks(): Collection
-    {
-        return $this->videos;
     }
 
     public function addVideo(Video $video): self

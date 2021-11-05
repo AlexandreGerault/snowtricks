@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functionnal\Trick;
+namespace App\Tests\Functional\Trick;
 
-use App\Tests\Functionnal\Trick\Fixture\ListTricksFixture;
+use App\Tests\Functional\Trick\Fixture\ListTricksFixture;
 use App\Tests\Setup\WebTestCase;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
@@ -18,7 +18,7 @@ class HomepageTestCaseTest extends WebTestCase
         parent::setUp();
 
         /** @var DatabaseToolCollection $databaseTool */
-        $databaseTool = $this->container()->get(DatabaseToolCollection::class);
+        $databaseTool = $this->client->getContainer()->get(DatabaseToolCollection::class);
         $this->databaseTool = $databaseTool->get();
     }
 

@@ -45,28 +45,18 @@ class RegisterNewTrickController extends AbstractController implements RegisterN
         }
 
         $registerNewTrickFormRequest = new RegisterNewTrickFormModel();
-
         $form = $this->createForm(RegisterNewTrickFormType::class, $registerNewTrickFormRequest);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $illustrations = $this->prepareIllustrationsFormDomain($registerNewTrickFormRequest);
-                $registerNewTrickRequest = new RegisterNewTrickRequest(
-                    thumbnail: new File(
-                        $this->generateFilename(
-                            $registerNewTrickFormRequest,
-                            $registerNewTrickFormRequest->thumbnail
-                        ),
-                        $registerNewTrickFormRequest->thumbnail->getContent()
+                $this->useCase->executes(
+                    $this->getRegisterNewTrickRequest(
+                        $registerNewTrickFormRequest,
+                        $this->prepareIllustrationsFormDomain($registerNewTrickFormRequest)
                     ),
-                    name: $registerNewTrickFormRequest->name,
-                    description: $registerNewTrickFormRequest->description,
-                    category: $registerNewTrickFormRequest->category->getName(),
-                    videosUrls: $registerNewTrickFormRequest->videos,
-                    illustrations: $illustrations
+                    $this
                 );
-                $this->useCase->executes($registerNewTrickRequest, $this);
 
                 return $this->redirect($this->redirectUrl);
             } catch (InvalidArgumentException $e) {
@@ -77,7 +67,6 @@ class RegisterNewTrickController extends AbstractController implements RegisterN
         }
 
         $this->vm->form = $form->createView();
-
         return $this->render('tricks/create.html.twig', ['vm' => $this->vm]);
     }
 
@@ -114,6 +103,26 @@ class RegisterNewTrickController extends AbstractController implements RegisterN
                 return new File($filename, $file->getContent());
             },
             $registerNewTrickFormRequest->illustrations
+        );
+    }
+
+    private function getRegisterNewTrickRequest(
+        RegisterNewTrickFormModel $registerNewTrickFormRequest,
+        array $illustrations
+    ): RegisterNewTrickRequest {
+        return new RegisterNewTrickRequest(
+            thumbnail: new File(
+                $this->generateFilename(
+                    $registerNewTrickFormRequest,
+                    $registerNewTrickFormRequest->thumbnail
+                ),
+                $registerNewTrickFormRequest->thumbnail->getContent()
+            ),
+            name: $registerNewTrickFormRequest->name,
+            description: $registerNewTrickFormRequest->description,
+            category: $registerNewTrickFormRequest->category->getName(),
+            videosUrls: $registerNewTrickFormRequest->videos,
+            illustrations: $illustrations
         );
     }
 }

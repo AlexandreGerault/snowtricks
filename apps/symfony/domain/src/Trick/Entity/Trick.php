@@ -8,8 +8,6 @@ use InvalidArgumentException;
 
 class Trick
 {
-    private string $imageUrl;
-
     /**
      * @param string $name
      * @param array  $illustrations
@@ -52,6 +50,11 @@ class Trick
         return $this->name;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function getCategory(): string
     {
         return $this->category;
@@ -62,18 +65,16 @@ class Trick
         return $this->thumbnail;
     }
 
-    public function getDescription(): string
+    /**
+     * @return array<string>
+     */
+    public function getIllustrationsPath(): array
     {
-        return $this->description;
+        return $this->illustrations;
     }
 
     public function getVideoLinks(): array
     {
         return $this->videos;
-    }
-
-    public function getIllustrationsPath(): array
-    {
-        return $this->illustrations;
     }
 }
