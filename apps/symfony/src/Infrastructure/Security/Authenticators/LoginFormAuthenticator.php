@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Security\Guard;
+namespace App\Infrastructure\Security\Authenticators;
 
 use App\UserInterface\Security\ViewModels\HtmlLoginViewModel;
 use Domain\Security\UseCases\Login\Login;
 use Domain\Security\UseCases\Login\LoginPresenterInterface;
 use Domain\Security\UseCases\Login\LoginRequest;
 use Domain\Security\UseCases\Login\LoginResponse;
-use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,12 +41,9 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
 
     public function authenticate(Request $request): PassportInterface
     {
-        $email = $request->request->get('email', '');
-        $password = $request->request->get('password', '');
-
-        if (!is_string($email) || !is_string($password)) {
-            throw new InvalidArgumentException('Request cannot allow authentication');
-        }
+        $email = (string) $request->request->get('email', '');
+        $password = (string) $request->request->get('password', '');
+        $csrfToken = (string) $request->request->get('_csrf_token', '');
 
         $loginRequest = new LoginRequest($email, $password);
         $this->login->execute($loginRequest, $this);
@@ -58,24 +54,23 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator implements L
             new UserBadge($email),
             new PasswordCredentials($password),
             [
-                new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
+                new CsrfTokenBadge('authenticate', $csrfToken),
             ]
         );
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
-            return new RedirectResponse($targetPath);
-        }
-
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         if ($request->hasSession()) {
-            $request->getSession()->set(Security::AUTHENTICATION_ERROR, $this->viewModel->errors + [$exception]);
+            $request->getSession()->set(
+                Security::AUTHENTICATION_ERROR,
+                array_merge($this->viewModel->errors, [$exception->getMessage()])
+            );
         }
 
         $url = $this->getLoginUrl($request);

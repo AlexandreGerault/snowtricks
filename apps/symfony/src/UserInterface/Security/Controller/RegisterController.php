@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\UserInterface\Security\Controller;
 
+use App\UserInterface\Security\DTO\RegisterFormModel;
 use App\UserInterface\Security\Forms\RegistrationFormType;
 use App\UserInterface\Security\ViewModels\HtmlRegisterViewModel;
 use Domain\Security\UseCases\Register\Register;
@@ -26,12 +27,12 @@ class RegisterController extends AbstractController implements RegisterPresenter
         Request $request,
         Register $register
     ): Response {
-        $registerRequest = new RegisterRequest();
-
-        $form = $this->createForm(RegistrationFormType::class, $registerRequest);
+        $formRequest = new RegisterFormModel();
+        $form = $this->createForm(RegistrationFormType::class, $formRequest);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $registerRequest = new RegisterRequest($formRequest->username, $formRequest->email, $formRequest->password);
             $register->execute($registerRequest, $this);
 
             if ($this->viewModel->redirect) {

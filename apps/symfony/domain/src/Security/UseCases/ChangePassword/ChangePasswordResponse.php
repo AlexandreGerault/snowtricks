@@ -8,5 +8,7 @@ use Domain\Security\Entity\Member;
 
 class ChangePasswordResponse
 {
-    public ?Member $member = null;
+    public function __construct(public Member $member)
+    {
+    }
 }

@@ -28,21 +28,18 @@ class ChangePasswordController extends AbstractController implements ChangePassw
     #[Route('/changer-de-mot-de-passe', name: 'app_change_password')]
     public function __invoke(Request $request, ChangePassword $useCase): Response
     {
+        if (!$request->get('token')) {
+            return $this->handleNoTokenInRequest();
+        }
+
         $changePasswordRequest = new ChangePasswordRequest();
 
         $form = $this->createForm(ChangePasswordFormType::class, $changePasswordRequest);
         $this->vm->form = $form->createView();
 
-        if (!$request->get('token')) {
-            $this->vm->errors[] = "Aucun jeton valide dans l'url";
+        $token = $this->getToken($request);
 
-            return $this->render('security/change_password.html.twig', ['vm' => $this->vm]);
-        }
-
-        assert(is_string($request->query->get('token')));
-        $token = $this->jwtConfiguration->parser()->parse($request->query->get('token'));
-        assert($token instanceof UnencryptedToken);
-
+        /** @var string $email */
         $email = $token->claims()->get('uid');
         $changePasswordRequest->email = $email;
 
@@ -67,5 +64,20 @@ class ChangePasswordController extends AbstractController implements ChangePassw
     public function handleUserNotFound(): void
     {
         $this->vm->errors[] = 'Aucun utilisateur correspondant';
+    }
+
+    private function handleNoTokenInRequest(): Response
+    {
+        $this->vm->errors[] = "Aucun jeton valide dans l'url";
+
+        return $this->render('security/change_password.html.twig', ['vm' => $this->vm]);
+    }
+
+    private function getToken(Request $request): UnencryptedToken
+    {
+        $token = $this->jwtConfiguration->parser()->parse((string) $request->query->get('token'));
+        assert($token instanceof UnencryptedToken);
+
+        return $token;
     }
 }

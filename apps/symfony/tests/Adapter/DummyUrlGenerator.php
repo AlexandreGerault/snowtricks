@@ -30,6 +30,6 @@ class DummyUrlGenerator implements UrlGeneratorInterface
 
     public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH)
     {
-        return $this->routes['name'] ?? throw new \RuntimeException('Route not found');
+        return $this->routes[$name] ?? throw new \RuntimeException('Route not found');
     }
 }

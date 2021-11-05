@@ -14,8 +14,6 @@ interface TrickGateway
      */
     public function getLastTricksOverviews(int $quantity): array;
 
-    public function getTrickByName(string $name): Trick;
-
     public function isNameAvailable(string $name): bool;
 
     public function save(Trick $trick): void;

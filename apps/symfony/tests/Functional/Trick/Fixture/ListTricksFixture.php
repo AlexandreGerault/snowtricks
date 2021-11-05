@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Application\Trick\Fixture;
+namespace App\Tests\Functional\Trick\Fixture;
 
 use App\Infrastructure\Trick\Entity\Category;
 use App\Infrastructure\Trick\Entity\Illustration;

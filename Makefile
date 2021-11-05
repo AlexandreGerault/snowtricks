@@ -1,3 +1,11 @@
+.PHONY: install-classic
+install-classic:
+	docker-compose up -d
+
+.PHONY: install-docker
+install-docker:
+	docker-compose up -d
+
 .PHONY: start
 start:
 	docker-compose up -d
@@ -20,5 +28,4 @@ build-test:
 
 .PHONY: test
 test:
-	docker-compose -f docker-compose.test.yml --env-file=.env.test run --rm php_test bin/console d:s:u --force
-	docker-compose -f docker-compose.test.yml --env-file=.env.test run --rm php_test vendor/bin/phpunit
+	docker-compose -f docker-compose.test.yml --env-file=.env.test run --rm php_test bin/phpunit --colors

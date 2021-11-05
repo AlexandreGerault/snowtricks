@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Security\Guard;
+namespace App\Infrastructure\Security\Authenticators;
 
 use App\Infrastructure\Security\Contracts\Repository\MembersRepositoryInterface;
 use Domain\Security\Entity\Member;

@@ -37,7 +37,7 @@
 
                     <div class="mt-2 px-6 py-4 rounded bg-gray-50 flex flex-col gap-4">
                         <template x-for="video in videos" :key="video.name">
-                            <div class="flex gap-2 items-end w-full">
+                            <div class="flex gap-2 items-end w-full video-item">
                                 <div class="flex-1">
                                     <span x-html="document.getElementById('register_new_trick_form_videos').dataset.prototype.replace(/__name__label__/g, `Vidéo ${video.name}`).replace(/__name__/g, video.name)"></span>
                                 </div>
@@ -64,7 +64,7 @@
 
                     <div class="mt-2 px-6 py-4 rounded bg-gray-50 flex flex-col gap-4">
                         <template x-for="illustration in illustrations" :key="illustration.name">
-                            <div class="flex gap-2 items-end">
+                            <div class="flex gap-2 items-end illustration-item">
                                 <div class="flex-1">
                                     <span x-html="document.getElementById('register_new_trick_form_illustrations').dataset.prototype.replace(/__name__label__/g, `Illustration ${illustration.name}`).replace(/__name__/g, illustration.name)"></span>
                                 </div>

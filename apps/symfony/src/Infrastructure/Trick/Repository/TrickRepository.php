@@ -10,6 +10,7 @@ use App\Infrastructure\Trick\Entity\Trick;
 use App\Infrastructure\Trick\Entity\Video;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Domain\Trick\Entity\Trick as DomainTrick;
 use Domain\Trick\Entity\TrickOverview;
@@ -47,13 +48,6 @@ class TrickRepository extends ServiceEntityRepository implements TrickGateway
         }, $results);
     }
 
-    public function getTrickByName(string $name): DomainTrick
-    {
-        $trick = $this->findOneBy(['name' => $name]);
-
-        return new DomainTrick('', [], '', '', [], '');
-    }
-
     public function isNameAvailable(string $name): bool
     {
         $result = $this
@@ -72,7 +66,7 @@ class TrickRepository extends ServiceEntityRepository implements TrickGateway
 
     /**
      * @throws OptimisticLockException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function save(DomainTrick $trick): void
     {

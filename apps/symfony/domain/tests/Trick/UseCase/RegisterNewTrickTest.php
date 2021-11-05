@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 class RegisterNewTrickTest extends TestCase implements RegisterNewTrickPresenterInterface
 {
-    private TrickGateway $tricksGateway;
+    private InMemoryTrickRepository $tricksGateway;
     private RegisterNewTrickResponse $response;
     private RegisterNewTrick $useCase;
 

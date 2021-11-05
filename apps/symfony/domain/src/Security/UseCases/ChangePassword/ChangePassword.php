@@ -15,20 +15,16 @@ class ChangePassword
 
     public function execute(ChangePasswordRequest $request, ChangePasswordPresenterInterface $presenter): void
     {
-        $response = new ChangePasswordResponse();
-
         try {
             $member = $this->membersGateway->getMemberByEmail($request->email);
-            $member->changePassword($request->password);
-            $this->membersGateway->updateMember($member);
-
-            $response->member = $member;
+            $this->membersGateway->updatePassword($member, $request->password);
         } catch (UserNotFoundException $e) {
             $presenter->handleUserNotFound();
 
             return;
         }
 
+        $response = new ChangePasswordResponse($member);
         $presenter->presents($response);
     }
 }

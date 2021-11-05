@@ -10,15 +10,31 @@ use Domain\Security\Entity\Member;
 
 class UserFactory implements UserFactoryInterface
 {
+    public function updateToMember(User $user, Member $member): User
+    {
+        return ($user)
+            ->setEmail($member->email())
+            ->setUsername($member->username())
+            ->setPassword($member->password())
+            ->setActive($member->isActive());
+    }
+
     public function createFromMember(Member $member): User
     {
-        $user = new User();
+        return (new User())
+            ->setEmail($member->email())
+            ->setUsername($member->username())
+            ->setPassword($member->password())
+            ->setActive($member->isActive());
+    }
 
-        $user->setEmail($member->email());
-        $user->setUsername($member->username());
-        $user->setPassword($member->password());
-        $user->setActive($member->isActive());
-
-        return $user;
+    public function createMember(User $user): Member
+    {
+        return new Member(
+            $user->getEmail() ?? '',
+            $user->getUsername(),
+            $user->getPassword(),
+            $user->isActive()
+        );
     }
 }
