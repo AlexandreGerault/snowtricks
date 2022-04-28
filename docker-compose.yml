@@ -43,6 +43,11 @@ services:
     depends_on:
       - mailer
 
+  node:
+    image: node:latest
+    volumes:
+      - './apps/symfony/:/usr/src/app'
+
   mailer:
     image: mailhog/mailhog:latest
     container_name: mailhog
