@@ -258,6 +258,9 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
+    "stella-maris/clock": {
+        "version": "0.1.4"
+    },
     "symfony/asset": {
         "version": "v5.3.4"
     },
@@ -391,9 +394,6 @@
     "symfony/options-resolver": {
         "version": "v5.3.4"
     },
-    "symfony/orm-pack": {
-        "version": "v2.1.0"
-    },
     "symfony/panther": {
         "version": "1.1",
         "recipe": {
@@ -447,9 +447,6 @@
     },
     "symfony/process": {
         "version": "v5.3.7"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.5"
     },
     "symfony/property-access": {
         "version": "v5.3.4"
@@ -540,9 +537,6 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
-    },
-    "symfony/twig-pack": {
-        "version": "v1.0.1"
     },
     "symfony/validator": {
         "version": "4.3",
