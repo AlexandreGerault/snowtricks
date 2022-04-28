@@ -1,18 +1,22 @@
-.PHONY: install-classic
-install-classic:
-	docker compose up -d
+.PHONY: install
+install: prepare-install migrate build-front
 
-.PHONY: install-docker
-install-docker:
+.PHONY: prepare-install
+prepare-install:
 	cp .env.example .env
 	docker compose build
 	docker compose up -d
 	cp apps/symfony/.env.example apps/symfony/.env
 	docker compose run php composer install
+
+.PHONY: migrate
+migrate:
 	docker compose run php bin/console doctrine:migrations:migrate --no-interaction
+
+.PHONY: build-front
+build-front:
 	docker compose run -w="/usr/src/app" -u=1000:1000 node yarn
 	docker compose run -w="/usr/src/app" -u=1000:1000 node yarn build
-
 
 .PHONY: start
 start:
