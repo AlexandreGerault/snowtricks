@@ -9,6 +9,7 @@ install-docker:
 	docker compose up -d
 	cp apps/symfony/.env.example apps/symfony/.env
 	docker compose run php composer install
+	docker compose run php bin/console doctrine:migrations:migrate --no-interaction
 	
 
 .PHONY: start
