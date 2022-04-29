@@ -3,9 +3,12 @@
 namespace Domain\Tests\Trick\Factory;
 
 use Domain\Trick\Entity\Trick;
+use Symfony\Component\Uid\AbstractUid;
+use Symfony\Component\Uid\Uuid;
 
 class TrickFactory
 {
+    public AbstractUid $uuid;
     public string $name = 'Trick';
     public string $category = 'Category';
     public string $description = 'Description';
@@ -70,5 +73,12 @@ class TrickFactory
             $this->videos,
             $this->thumbnailUrl
         );
+    }
+
+    public function uuid(AbstractUid $uuid): self
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Trick\UseCase\RegisterNewTrick;
 
+use Domain\Tests\Trick\Factory\TrickFactory;
 use Domain\Trick\Entity\Trick;
 use Domain\Trick\Exception\TrickAlreadyExistsException;
 use Domain\Trick\Gateway\IllustrationGateway;
@@ -39,14 +40,14 @@ class RegisterNewTrick
             );
         }
 
-        $trick = new Trick(
-            name: $request->name,
-            illustrations: array_map(fn (File $illustration) => $illustration->filename, $request->illustrations),
-            description: $request->description,
-            category: $request->category,
-            videos: $request->videosUrls,
-            thumbnail: $request->thumbnail->filename
-        );
+        $trick = TrickFactory::new()
+            ->name($request->name)
+            ->illustrations(array_map(fn (File $illustration) => $illustration->filename, $request->illustrations))
+            ->description($request->description)
+            ->category($request->category)
+            ->videos($request->videosUrls)
+            ->thumbnail($request->thumbnail->filename)
+            ->create();
 
         $this->tricksGateway->save($trick);
 

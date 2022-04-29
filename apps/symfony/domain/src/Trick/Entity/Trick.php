@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Trick\Entity;
 
 use InvalidArgumentException;
+use Symfony\Component\Uid\AbstractUid;
 
 class Trick
 {
@@ -17,6 +18,7 @@ class Trick
      * @param string $thumbnail
      */
     public function __construct(
+        private AbstractUid $uuid,
         private string $name,
         private array $illustrations,
         private string $description,
@@ -43,6 +45,11 @@ class Trick
         if (count($this->illustrations) < 1) {
             throw new InvalidArgumentException('Must at least have 1 illustration');
         }
+    }
+
+    public function getId(): AbstractUid
+    {
+        return $this->uuid;
     }
 
     public function getName(): string
