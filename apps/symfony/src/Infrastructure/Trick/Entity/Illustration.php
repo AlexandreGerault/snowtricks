@@ -18,6 +18,7 @@ class Illustration
     #[ORM\Column(type: 'string', length: 255)]
     private string $path;
 
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     #[ORM\ManyToOne(targetEntity: Trick::class, inversedBy: 'illustrations')]
     private Trick $trick;
 

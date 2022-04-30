@@ -2,8 +2,10 @@
 
 namespace Domain\Tests\Trick\Adapter;
 
+use Domain\Tests\Trick\Factory\TrickFactory;
 use Domain\Trick\Entity\Trick;
 use Domain\Trick\Gateway\TrickGateway;
+use Symfony\Component\Uid\Uuid;
 
 class InMemoryTrickRepository implements TrickGateway
 {
@@ -45,5 +47,10 @@ class InMemoryTrickRepository implements TrickGateway
         });
 
         return 0 === count($matching);
+    }
+
+    public function findByUuid(Uuid $uuid): Trick
+    {
+        return TrickFactory::new()->create();
     }
 }

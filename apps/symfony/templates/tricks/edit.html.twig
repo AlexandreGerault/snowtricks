@@ -6,14 +6,12 @@
     <div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Ajouter une figure de snowboard
+                Modifier la figure
             </h2>
         </div>
 
         {% if vm.errors %}
-            <div class="rounded bg-red-100 border border-red-400 text-red-900 px-6 py-4 w-full max-w-7xl mx-auto">
-                {{ vm.errors | join(', ') }}
-            </div>
+            {{ vm.errors | join(', ') }}
         {% endif %}
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-7xl">
@@ -21,9 +19,8 @@
                 {{ form_start(vm.form, {'attr': {'class' : 'flex flex-col gap-4'}}) }}
 
                 {{ form_row(vm.form.name) }}
-                {{ form_row(vm.form.description) }}
                 {{ form_row(vm.form.category) }}
-                {{ form_row(vm.form.thumbnail) }}
+                {{ form_row(vm.form.description) }}
 
                 <div x-data="{ videos: [{name: 1}] }" class="mt-6">
                     <div class="flex items-center gap-2">
@@ -52,44 +49,12 @@
                         </template>
                     </div>
                 </div>
-
-                <div x-data="{ illustrations: [{name: 1}] }" class="mt-6">
-                    <div class="flex items-center gap-2">
-                        {{ form_row(vm.form.illustrations) }}
-                        <button type="button"
-                                @click.prevent="illustrations = [...illustrations, {name: (illustrations[illustrations.length - 1]?.name ?? 0) + 1}]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div class="mt-2 px-6 py-4 rounded bg-gray-50 flex flex-col gap-4">
-                        <template x-for="illustration in illustrations" :key="illustration.name">
-                            <div class="flex gap-2 items-end illustration-item">
-                                <div class="flex-1">
-                                    <span x-html="document.getElementById('register_new_trick_form_illustrations').dataset.prototype.replace(/__name__label__/g, `Illustration ${illustration.name}`).replace(/__name__/g, illustration.name)"></span>
-                                </div>
-                                <button type="button"
-                                        class="text-red-500 hover:text-red-700 transition-all"
-                                        @click.prevent="illustrations = illustrations.filter(i => i.name !== illustration.name)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </template>
-                    </div>
-
-
-                </div>
-
                 {{ form_rest(vm.form) }}
 
                 <div class="mt-6">
                     <button type="submit"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Ajouter la figure
+                        Modifier la figure
                     </button>
                 </div>
 
