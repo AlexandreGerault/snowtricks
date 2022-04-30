@@ -58,6 +58,8 @@ class RegisterNewTrickController extends AbstractController implements RegisterN
                     $this
                 );
 
+                $this->addFlash("success", "Nouvelle figure ajoutée avec succès !");
+
                 return $this->redirect($this->redirectUrl);
             } catch (InvalidArgumentException $e) {
                 $this->vm->errors['TRICK_CANNOT_BE_CREATED'] = $e->getMessage();
@@ -81,7 +83,7 @@ class RegisterNewTrickController extends AbstractController implements RegisterN
     ): string {
         $orignalName = $registerNewTrickFormRequest->name;
         $originalExtension = $file->getClientOriginalExtension();
-        $filename = $orignalName.time();
+        $filename = $orignalName.uniqid();
 
         $filename = $this
             ->slugger
