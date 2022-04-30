@@ -11,7 +11,9 @@
         </div>
 
         {% if vm.errors %}
-            {{ vm.errors | join(', ') }}
+            <div class="rounded bg-red-100 border border-red-400 text-red-900 px-6 py-4 w-full max-w-7xl mx-auto">
+                {{ vm.errors | join(', ') }}
+            </div>
         {% endif %}
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-7xl">
