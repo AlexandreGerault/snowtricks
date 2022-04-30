@@ -23,7 +23,7 @@ class RegisterNewTrick
     public function executes(RegisterNewTrickRequest $request, RegisterNewTrickPresenterInterface $presenter): void
     {
         if (!$this->tricksGateway->isNameAvailable($request->name)) {
-            throw new TrickAlreadyExistsException('A trick with this name already exists');
+            throw new TrickAlreadyExistsException('Une figure avec ce nom existe déjà');
         }
 
         $trick = TrickFactory::new()
