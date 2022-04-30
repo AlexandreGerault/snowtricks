@@ -10,6 +10,8 @@ class EditTrickRequest
         public readonly string $uuid,
         public readonly string $name,
         public readonly string $description,
+        public readonly array $videoLinks,
+        public readonly string $category,
     ) {
     }
 }

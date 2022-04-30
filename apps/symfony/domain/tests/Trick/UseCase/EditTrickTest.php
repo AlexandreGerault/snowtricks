@@ -40,7 +40,7 @@ class EditTrickTest extends TestCase implements EditTrickPresenterInterface
     {
         $request = new EditTrickRequest($this->uuid, "New name", "Old description");
 
-        $this->useCase->executes($request, $this);
+        $this->useCase->execute($request, $this);
 
         $this->assertEquals("New name", $this->response->trick->getName());
     }
@@ -49,7 +49,7 @@ class EditTrickTest extends TestCase implements EditTrickPresenterInterface
     {
         $request = new EditTrickRequest($this->uuid, "Old name", "New description");
 
-        $this->useCase->executes($request, $this);
+        $this->useCase->execute($request, $this);
 
         $this->assertEquals("New description", $this->response->trick->getDescription());
     }
