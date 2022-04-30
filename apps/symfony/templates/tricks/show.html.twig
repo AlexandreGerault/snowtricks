@@ -26,7 +26,7 @@
     </header>
 
     <div class="max-w-7xl mx-auto bg-white rounded shadow transform -translate-y-8">
-        <section class="grid lg:grid-cols-2 p-4">
+        <section class="grid lg:grid-cols-2 gap-8 p-4">
             {# Photos #}
             <div class="flex justify-between flex-wrap gap-4">
                 {% for illustration in trick.illustrationPaths %}
@@ -36,13 +36,39 @@
 
             {# Videos #}
             <div>
-
+                {% for video in trick.videoLinks %}
+                    <iframe width="192" height="192" src="{{ video.link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% endfor %}
             </div>
         </section>
 
         <p class="px-6 py-4">
             {{ trick.description }}
         </p>
+
+        <div class="px-6 py-4">
+            {{ form_start(form, {'attr': {'class' : 'flex flex-col gap-4'}}) }}
+
+            {{ form_rest(form) }}
+
+            <button type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Commenter
+            </button>
+
+
+            {{ form_end(form) }}
+        </div>
+
+        {# Comments #}
+        <section class="flex flex-col gap-4 px-6 py-4">
+            {% for comment in trick.comments %}
+                <article class="rounded bg-white shadow px-6 py-4">
+                    <p>{{ comment.content }}</p>
+                    <p class="text-sm text-gray-600 italic">{{ comment.author.username }}</p>
+                </article>
+            {% endfor %}
+        </section>
     </div>
 </main>
 {% endblock %}

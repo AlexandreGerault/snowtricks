@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security\Entity;
 
 use App\Infrastructure\Security\Repository\UserRepository;
+use App\Infrastructure\Trick\Entity\Comment;
+use App\Infrastructure\Trick\Entity\Illustration;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -41,6 +43,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private bool $active = false;
+
+    /** @var Collection<int, Comment> */
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class, cascade: ["remove"])]
+    private Collection $comments;
 
     public function getEmail(): ?string
     {
@@ -128,5 +134,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->active = $isActive;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Collection<int, Comment> $comments
+     */
+    public function setComments(Collection $comments): void
+    {
+        $this->comments = $comments;
     }
 }

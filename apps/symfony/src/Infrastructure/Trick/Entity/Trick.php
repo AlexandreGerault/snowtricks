@@ -44,6 +44,10 @@ class Trick
     #[ORM\OneToOne(targetEntity: Illustration::class, cascade: ["remove"])]
     private Illustration $thumbnail;
 
+    /** @var Collection<int, Comment> */
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class, cascade: ["remove"])]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->illustrations = new ArrayCollection();
@@ -144,5 +148,21 @@ class Trick
     public function setUuid(AbstractUid $uuid): void
     {
         $this->uuid = $uuid;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Collection<int, Comment> $comments
+     */
+    public function setComments(Collection $comments): void
+    {
+        $this->comments = $comments;
     }
 }
