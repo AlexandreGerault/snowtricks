@@ -15,6 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Domain\Trick\Entity\Trick as DomainTrick;
 use Domain\Trick\Entity\TrickOverview;
 use Domain\Trick\Gateway\TrickGateway;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @extends ServiceEntityRepository<Trick>
@@ -72,6 +73,7 @@ class TrickRepository extends ServiceEntityRepository implements TrickGateway
     {
         $trickEntity = new Trick();
 
+        $trickEntity->setUuid($trick->getId());
         $trickEntity->setName($trick->getName());
         $trickEntity->setDescription($trick->getDescription());
         $trickEntity->setCategory(
@@ -103,6 +105,48 @@ class TrickRepository extends ServiceEntityRepository implements TrickGateway
         }
 
         $this->_em->persist($trickEntity);
+        $this->_em->flush();
+    }
+
+    public function findByUuid(Uuid $uuid): DomainTrick
+    {
+        /** @var Trick $trick */
+        $trick = $this->findOneBy(['uuid' => $uuid]);
+
+        return new DomainTrick(
+            $uuid,
+            $trick->getName(),
+            $trick->getIllustrationPaths(),
+            $trick->getDescription(),
+            $trick->getCategory()->getName(),
+            $trick->getVideoLinks()->toArray(),
+            $trick->getThumbnail()->getPath()
+        );
+    }
+
+    public function update(DomainTrick $trick): void
+    {
+        $doctrineTrick = $this->findOneBy(['uuid' => $trick->getId()->toRfc4122()]);
+        $originalVideoLinks = $doctrineTrick->getVideoLinks()->map(fn (Video $video) => $video->getLink())->toArray();
+
+        $doctrineTrick->setName($trick->getName());
+        $doctrineTrick->setDescription($trick->getDescription());
+        $doctrineTrick->setCategory(
+            $this->categoryRepository->findOneBy(['name' => $trick->getCategory()])
+            ?? throw new \RuntimeException('The category is invalid')
+        );
+
+        foreach (array_diff($trick->getVideoLinks(), $originalVideoLinks) as $videoLink) {
+            $video = (new Video())->setLink($videoLink)->setTrick($doctrineTrick);
+            $doctrineTrick->addVideo($video);
+            $this->_em->persist($video);
+        }
+
+        foreach (array_diff($originalVideoLinks, $trick->getVideoLinks()) as $videoLink) {
+            $this->_em->remove($doctrineTrick->removeVideo($videoLink));
+        }
+
+        $this->_em->persist($doctrineTrick);
         $this->_em->flush();
     }
 }

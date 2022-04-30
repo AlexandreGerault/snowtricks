@@ -20,4 +20,6 @@ interface TrickGateway
     public function isNameAvailable(string $name): bool;
 
     public function save(Trick $trick): void;
+
+    public function update(Trick $trick): void;
 }

@@ -18,7 +18,9 @@ class TrickFactory
 
     public static function new(): TrickFactory
     {
-        return new self();
+        $new = new self();
+        $new->uuid = Uuid::v4();
+        return $new;
     }
 
     public function name(string $name): self
@@ -66,6 +68,7 @@ class TrickFactory
     public function create(): Trick
     {
         return new Trick(
+            $this->uuid,
             $this->name,
             $this->illustrations,
             $this->description,

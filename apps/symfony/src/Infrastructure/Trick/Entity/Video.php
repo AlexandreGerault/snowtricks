@@ -34,4 +34,9 @@ class Video
 
         return $this;
     }
+
+    public function getLink(): string
+    {
+        return $this->link;
+    }
 }

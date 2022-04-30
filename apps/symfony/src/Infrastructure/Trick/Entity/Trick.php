@@ -7,7 +7,10 @@ namespace App\Infrastructure\Trick\Entity;
 use App\Infrastructure\Trick\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\AbstractUid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 #[ORM\Table(name: '`tricks`')]
@@ -17,6 +20,9 @@ class Trick
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private int $id;
+
+    #[ORM\Column(type: "uuid")]
+    private AbstractUid $uuid;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private string $name;
@@ -28,14 +34,14 @@ class Trick
     private Category $category;
 
     /** @var Collection<int, Illustration> */
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Illustration::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Illustration::class, cascade: ["remove"])]
     private Collection $illustrations;
 
     /** @var Collection<int, Video> */
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, cascade: ["remove"])]
     private Collection $videos;
 
-    #[ORM\OneToOne(targetEntity: Illustration::class)]
+    #[ORM\OneToOne(targetEntity: Illustration::class, cascade: ["remove"])]
     private Illustration $thumbnail;
 
     public function __construct()
@@ -78,11 +84,27 @@ class Trick
         return $this;
     }
 
+    public function getIllustrationPaths(): array
+    {
+        return $this
+            ->illustrations
+            ->map(fn (Illustration $illustration) => $illustration->getPath())
+            ->toArray();
+    }
+
     public function addVideo(Video $video): self
     {
         $this->videos->add($video);
 
         return $this;
+    }
+
+    public function removeVideo(string $videoLink): Video
+    {
+        $video = $this->videos->filter(fn (Video $video) => $videoLink === $video->getLink())->first();
+        $this->videos->removeElement($video);
+
+        return $video;
     }
 
     public function getThumbnail(): Illustration
@@ -95,5 +117,32 @@ class Trick
         $this->thumbnail = $thumbnail;
 
         return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getVideoLinks(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function setVideoLinks(array $links): void
+    {
+    }
+
+    public function getUuid(): AbstractUid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(AbstractUid $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 }

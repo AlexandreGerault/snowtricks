@@ -84,4 +84,32 @@ class Trick
     {
         return $this->videos;
     }
+
+    public function rename(string $name): Trick
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function changeDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function changeVideoLinks(array $videos): static
+    {
+        $this->videos = $videos;
+
+        return $this;
+    }
+
+    public function attachToCategory(string $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
 }
