@@ -26,20 +26,6 @@ class RegisterNewTrick
             throw new TrickAlreadyExistsException('A trick with this name already exists');
         }
 
-        $this->illustrationsGateway->store(
-            "illustrations/{$request->name}",
-            $request->thumbnail->filename,
-            $request->thumbnail->content
-        );
-
-        foreach ($request->illustrations as $illustration) {
-            $this->illustrationsGateway->store(
-                "illustrations/{$request->name}",
-                $illustration->filename,
-                $illustration->content
-            );
-        }
-
         $trick = TrickFactory::new()
             ->name($request->name)
             ->illustrations(array_map(fn (File $illustration) => $illustration->filename, $request->illustrations))
@@ -48,6 +34,20 @@ class RegisterNewTrick
             ->videos($request->videosUrls)
             ->thumbnail($request->thumbnail->filename)
             ->create();
+
+        $this->illustrationsGateway->store(
+            "illustrations/{$trick->getId()->toRfc4122()}",
+            $request->thumbnail->filename,
+            $request->thumbnail->content
+        );
+
+        foreach ($request->illustrations as $illustration) {
+            $this->illustrationsGateway->store(
+                "illustrations/{$trick->getId()->toRfc4122()}",
+                $illustration->filename,
+                $illustration->content
+            );
+        }
 
         $this->tricksGateway->save($trick);
 
