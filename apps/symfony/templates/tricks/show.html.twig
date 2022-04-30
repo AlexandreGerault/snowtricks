@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Figure - {{ trick.name }}{% endblock %}
+
+{% block body %}
+<main class="relative">
+    <header class="relative h-96 flex flex-col">
+        <div class="absolute inset-0">
+            <img class="w-full max-h-96 object-cover"
+                 src="/illustrations/{{ trick.uuid }}/{{ trick.thumbnail.path }}"
+                 alt="Photo d'une figure de {{ trick.name }}"
+            />
+        </div>
+        <div class="absolute inset-0 bg-gray-400 mix-blend-multiply"></div>
+
+        <div class="relative flex-grow flex flex-col space-y-8 items-center justify-center">
+            <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                <span class="block text-white">{{ trick.name }}</span>
+            </h1>
+            <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+                <span class="block text-white max-w-3xl text-center">
+                    {{ trick.category.name }}
+                </span>
+            </h2>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto bg-white rounded shadow transform -translate-y-8">
+        <section class="grid lg:grid-cols-2 p-4">
+            {# Photos #}
+            <div class="flex justify-between flex-wrap gap-4">
+                {% for illustration in trick.illustrationPaths %}
+                    <img src="/illustrations/{{ trick.uuid }}/{{ illustration }}" class="w-48 h-48" alt=""/>
+                {% endfor %}
+            </div>
+
+            {# Videos #}
+            <div>
+
+            </div>
+        </section>
+
+        <p class="px-6 py-4">
+            {{ trick.description }}
+        </p>
+    </div>
+</main>
+{% endblock %}

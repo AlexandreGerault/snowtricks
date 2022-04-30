@@ -114,7 +114,7 @@
                 <article class="flex flex-col rounded-lg shadow-lg overflow-hidden">
                     <div class="flex-shrink-0">
                         <img class="h-48 w-full object-cover"
-                             src="illustrations/{{ trick.name }}/{{ trick.thumbnailUrl }}"
+                             src="/illustrations/{{ trick.uuid }}/{{ trick.thumbnailUrl }}"
                              alt="Photo d'une figure de {{ trick.name }}"
                         />
                     </div>
@@ -126,7 +126,7 @@
                                 </a>
                             </p>
                             <div class="flex gap-2 justify-between">
-                                <a href="#" class="block mt-2 hover:underline">
+                                <a href="{{ path('afficher-une-figure', {name: trick.name}) }}" class="block mt-2 hover:underline">
                                     <p class="text-xl font-semibold text-gray-900">
                                         {{ trick.name }}
                                     </p>

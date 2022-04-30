@@ -42,6 +42,7 @@ class TrickRepository extends ServiceEntityRepository implements TrickGateway
 
         return array_map(function (Trick $trick) {
             return new TrickOverview(
+                uuid: $trick->getUuid(),
                 name: $trick->getName(),
                 category: $trick->getCategory()->getName(),
                 thumbnail: $trick->getThumbnail()->getPath()
